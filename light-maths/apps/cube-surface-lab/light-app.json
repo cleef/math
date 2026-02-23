@@ -1,0 +1,9 @@
+{
+  "id": "cube-surface-lab",
+  "name": "Cube Surface Area Lab",
+  "version": "1.0.0",
+  "description": "Learn cube surface area through cutting and unfolding validation.",
+  "icon": "🧊",
+  "entry": "index.html",
+  "owner": "Light Maths Team"
+}

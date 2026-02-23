@@ -1,0 +1,15 @@
+{
+  "id": "cube-surface-lab",
+  "name": "立方体表面积实验室",
+  "description": "用剪边展开实验理解立方体表面积。",
+  "icon": "🧊",
+  "longDescription": "学生通过点选边并模拟剪刀剪开立方体，系统判定是否可以完整展开，并用动画验证。适用于几何入门和课堂演示。",
+  "usage": "## 学习流程\n- 选择边并执行剪刀动画\n- 观察系统判定是否可完整展开\n- 在成功方案下观看展开验证动画\n\n## 判定规则\n- 剩余连边需要形成 6 个面的树结构（5 条连边、连通且无环）",
+  "owner": "Light Maths Team",
+  "lastUpdated": "2026-02-23",
+  "enabled": true,
+  "status": "New",
+  "tags": ["geometry", "surface-area", "cube"],
+  "permissions": ["light.app.cube.surface.lab"],
+  "entryPath": "/apps/cube-surface-lab/"
+}

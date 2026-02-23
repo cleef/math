@@ -1,0 +1,9 @@
+{
+  "enabled": true,
+  "runtime": "node",
+  "start": ["npm", "run", "start:api"],
+  "healthPath": "/health",
+  "internalBasePath": "/",
+  "startupTimeoutMs": 20000,
+  "idleTtlSec": 900
+}
