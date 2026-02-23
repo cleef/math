@@ -1,0 +1,15 @@
+# Node
+node_modules/
+
+# Build outputs
+**/dist/
+
+# Runtime
+**/.run/
+
+# Mac
+.DS_Store
+
+# Memory logs
+memory/
+MEMORY.md

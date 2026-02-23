@@ -1,0 +1,139 @@
+:root {
+  color-scheme: light;
+  font-family: "Noto Serif SC", "PingFang SC", serif;
+  color: #2a261e;
+  background: #f7f2e6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.app {
+  min-height: 100vh;
+  display: grid;
+  align-content: center;
+  gap: 20px;
+  padding: 48px 24px;
+  background: radial-gradient(circle at top, #fff 0%, #f2ead9 72%);
+}
+
+.app--spotlight {
+  width: min(980px, 100%);
+  margin: 0 auto;
+}
+
+.app__header {
+  max-width: 680px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.app__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.7rem;
+  color: #7d6c4e;
+  margin-bottom: 8px;
+}
+
+.app__subtitle {
+  color: #60563f;
+}
+
+.app__panel {
+  background: #fffdf7;
+  border: 1px solid #d9c8a7;
+  border-radius: 16px;
+  padding: 22px 24px;
+  box-shadow: 0 12px 24px rgba(77, 56, 24, 0.12);
+  display: grid;
+  gap: 14px;
+}
+
+.app__panel h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.app__list {
+  margin: 0;
+  padding-left: 18px;
+  text-align: left;
+  display: grid;
+  gap: 8px;
+  color: #554832;
+}
+
+.app__caption {
+  margin: 0;
+  color: #61553e;
+}
+
+.shot-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.shot-card {
+  border-radius: 12px;
+  border: 1px solid #dbc8a4;
+  background: #fffcf5;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.shot-card h3 {
+  margin: 0;
+  font-size: 0.98rem;
+  color: #3f3423;
+}
+
+.shot-card p {
+  margin: 0;
+  color: #5d4f39;
+  font-size: 0.88rem;
+}
+
+.shot-placeholder {
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  border: 1px dashed #b99864;
+  background:
+    linear-gradient(135deg, #f2dfbe, #fff7e8),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(123, 88, 40, 0.08),
+      rgba(123, 88, 40, 0.08) 8px,
+      rgba(255, 255, 255, 0.6) 8px,
+      rgba(255, 255, 255, 0.6) 16px
+    );
+  display: grid;
+  place-items: center;
+  color: #6c522b;
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+button {
+  border: none;
+  background: #8f4a20;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 860px) {
+  .shot-grid {
+    grid-template-columns: 1fr;
+  }
+}

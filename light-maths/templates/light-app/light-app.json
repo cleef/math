@@ -1,0 +1,8 @@
+{
+  "id": "math-template",
+  "name": "Math Template",
+  "version": "0.1.0",
+  "description": "Minimal starter app for Light Math Hub.",
+  "entry": "index.html",
+  "owner": "Light Maths"
+}

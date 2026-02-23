@@ -1,0 +1,18 @@
+[
+  {
+    "id": "fraction-lab",
+    "name": "分数训练工坊",
+    "icon": "🧮",
+    "description": "面向小学阶段的分数加减乘除训练课，支持讲解与即时反馈。",
+    "longDescription": "围绕“同分母、异分母、约分、通分”四类核心能力设计。教师可用于课堂投屏演示，学生可用于课后自主训练。",
+    "usage": "## 使用方式\n- 点击“开始学习”进入训练页\n- 先阅读例题，再完成练习\n- 提交后查看即时解析\n\n## 教学建议\n- 课堂上先做 2 题示范\n- 再让学生分组完成剩余题目\n- 最后统一讲解高频错误",
+    "owner": "Light Maths Team",
+    "lastUpdated": "2026-02-23",
+    "listed": true,
+    "enabled": true,
+    "status": "Featured",
+    "tags": ["分数", "小学", "课堂练习"],
+    "permissions": ["light.app.fraction.lab"],
+    "entryPath": "/apps/fraction-lab/"
+  }
+]

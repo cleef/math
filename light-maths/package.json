@@ -1,0 +1,12 @@
+{
+  "name": "light-maths",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build:all": "node scripts/build-all.mjs",
+    "list:apps": "node scripts/list-apps.mjs",
+    "dev:api": "node server/gateway.mjs",
+    "start:api": "node server/gateway.mjs"
+  }
+}
