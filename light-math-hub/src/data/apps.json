@@ -1,5 +1,21 @@
 [
   {
+    "id": "cube-surface-lab",
+    "name": "立方体表面积实验室",
+    "icon": "🧊",
+    "description": "通过切割与展开动画理解立方体表面积。",
+    "longDescription": "围绕立方体展开图与表面积计算设计，支持逐步切边、开门展开与 11 种展开图观察。",
+    "usage": "## 使用方式\n- 点击“开始学习”进入实验\n- 在切边步骤中按顺序剪开边\n- 观察展开前后的对应关系并计算表面积\n\n## 教学建议\n- 先让学生预测展开图\n- 再通过动画验证并纠错\n- 最后回到公式进行迁移练习",
+    "owner": "Light Maths Team",
+    "lastUpdated": "2026-02-25",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": ["几何", "立方体", "表面积"],
+    "permissions": ["light.app.cube.surface.lab"],
+    "entryPath": "/apps/cube-surface-lab/"
+  },
+  {
     "id": "fraction-lab",
     "name": "分数训练工坊",
     "icon": "🧮",
