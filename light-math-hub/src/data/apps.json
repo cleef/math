@@ -13,7 +13,16 @@
     "status": "New",
     "tags": ["几何", "立方体", "表面积"],
     "permissions": ["light.app.cube.surface.lab"],
-    "entryPath": "/apps/cube-surface-lab/"
+    "entryPath": "/apps/cube-surface-lab/",
+    "i18n": {
+      "en-US": {
+        "name": "Cube Surface Lab",
+        "description": "Understand cube surface area through cutting and unfolding animations.",
+        "longDescription": "Designed around cube nets and surface-area calculation, with step-by-step edge cuts, door-style unfolding, and all 11 net patterns.",
+        "usage": "## How to use\n- Click \"Start Learning\" to open the lab\n- Cut edges in sequence during the cut phase\n- Observe before/after unfolding and calculate surface area\n\n## Teaching tips\n- Let students predict the net first\n- Verify and correct through animation\n- Return to the formula for transfer practice",
+        "tags": ["Geometry", "Cube", "Surface Area"]
+      }
+    }
   },
   {
     "id": "fraction-lab",
@@ -29,6 +38,65 @@
     "status": "Featured",
     "tags": ["分数", "小学", "课堂练习"],
     "permissions": ["light.app.fraction.lab"],
-    "entryPath": "/apps/fraction-lab/"
+    "entryPath": "/apps/fraction-lab/",
+    "i18n": {
+      "en-US": {
+        "name": "Fraction Practice Studio",
+        "description": "Fraction arithmetic training for elementary learners with guided hints and instant feedback.",
+        "longDescription": "Built around four core skills: same-denominator operations, unlike-denominator operations, reduction, and common denominators. Suitable for classroom demos and self-practice.",
+        "usage": "## How to use\n- Click \"Start Learning\" to enter practice mode\n- Read worked examples first, then solve exercises\n- Submit to view instant explanations\n\n## Teaching tips\n- Demonstrate 2 questions first in class\n- Let students finish the remaining set in groups\n- Summarize high-frequency mistakes at the end",
+        "tags": ["Fractions", "Elementary", "Classroom Practice"]
+      }
+    }
+  },
+  {
+    "id": "density",
+    "name": "密度可视化实验",
+    "icon": "⚖️",
+    "description": "在固定 1L 体积下观察密度变化如何影响质量。",
+    "longDescription": "通过动态粒子立方体与实时质量读数，帮助学生理解密度公式 ρ = m / V 以及材料密度差异。",
+    "usage": "## 使用方式\n- 点击“开始学习”进入实验\n- 先选择材料预设，再拖动密度滑杆\n- 观察 1L 容器下质量读数变化并记录\n\n## 教学建议\n- 先让学生预测不同材料质量大小\n- 再用可视化结果验证并讨论原因\n- 最后回到公式做题巩固",
+    "owner": "Light Maths Team",
+    "lastUpdated": "2026-02-27",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": ["物理量", "密度", "可视化实验"],
+    "permissions": ["light.app.density.lab"],
+    "entryPath": "/apps/density/",
+    "i18n": {
+      "en-US": {
+        "name": "Density Visual Lab",
+        "description": "See how density changes mass under a fixed 1L volume.",
+        "longDescription": "Dynamic particle cubes and live mass readings help students understand the density formula ρ = m / V and differences across materials.",
+        "usage": "## How to use\n- Click \"Start Learning\" to enter the lab\n- Pick a material preset, then drag the density slider\n- Observe and record mass changes in a 1L container\n\n## Teaching tips\n- Ask students to predict relative masses first\n- Use visualization results to verify and discuss causes\n- Return to formula-based exercises for reinforcement",
+        "tags": ["Physical Quantities", "Density", "Visual Lab"]
+      }
+    }
+  },
+  {
+    "id": "algebra-balance",
+    "name": "等式平衡实验",
+    "icon": "🎈",
+    "description": "通过天平与正负项操作，直观理解一元一次方程的平衡与移项。",
+    "longDescription": "使用左右盘、悬挂负项与可视化抵消效果，帮助学生理解“等式两边同时进行同样操作”以及加减法与项抵消的关系。",
+    "usage": "## 使用方式\n- 点击“Edit Problem”可手工编辑方程与 x 值\n- 从上方素材区拖动正负项到左右隐藏感应区\n- 观察天平倾斜与同侧可抵消项的淡化提示\n\n## 教学建议\n- 先让学生口头预测哪一边更重\n- 通过拖拽演示“同加同减”保持平衡\n- 引导学生根据抵消提示整理同类项",
+    "owner": "Light Maths Team",
+    "lastUpdated": "2026-03-01",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": ["代数", "方程", "平衡法"],
+    "permissions": ["light.app.algebra.balance"],
+    "entryPath": "/apps/algebra-balance/",
+    "i18n": {
+      "en-US": {
+        "name": "Algebra Balance Lab",
+        "description": "Use a balance beam with positive and negative terms to understand linear-equation balance operations.",
+        "longDescription": "Students manipulate terms on both sides, observe cancellation hints, and learn why applying the same operation to both sides preserves equation balance.",
+        "usage": "## How to use\n- Click \"Edit Problem\" to enter equation coefficients and x value\n- Drag positive/negative terms into left or right hidden sensing zones\n- Watch beam tilt and cancellation fading cues on each side\n\n## Teaching tips\n- Ask students to predict which side is heavier first\n- Demonstrate same-operation-on-both-sides with drag actions\n- Use cancellation cues to guide collecting like terms",
+        "tags": ["Algebra", "Equations", "Balance Method"]
+      }
+    }
   }
 ]

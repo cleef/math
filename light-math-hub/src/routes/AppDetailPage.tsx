@@ -1,44 +1,40 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useParams } from "react-router-dom";
 import { currentUser } from "../data/currentUser";
 import { findAppById, hasAccess, isListed } from "../data/appAccess";
 import AccessDeniedPage from "./AccessDeniedPage";
 import NotFoundPage from "./NotFoundPage";
 import AppIconBadge from "../components/AppIconBadge";
+import { useI18n } from "../i18n/I18nProvider";
+import { localizeAppRecord } from "../i18n/localizeAppRecord";
 
 export default function AppDetailPage() {
+  const { locale, catalog } = useI18n();
   const { id } = useParams();
-  const app = id ? findAppById(id) : undefined;
+  const sourceApp = id ? findAppById(id) : undefined;
+  const app = useMemo(
+    () => (sourceApp ? localizeAppRecord(sourceApp, locale) : undefined),
+    [sourceApp, locale]
+  );
   const [spotlightUrl, setSpotlightUrl] = useState<string | null>(null);
-  const quotes = [
-    {
-      text: "理解比记忆更重要，步骤比答案更重要。",
-      author: "Light Math Hub"
-    },
-    {
-      text: "把抽象概念变成可见步骤，学习效率会明显提升。",
-      author: "教学原则"
-    },
-    {
-      text: "先慢后快，先准后熟，是数学训练的底层节奏。",
-      author: "课堂经验"
-    },
-    {
-      text: "好的数学练习，应该让学生看见自己的进步。",
-      author: "学习设计"
-    }
-  ];
+  const detailText = catalog.detail;
+  const quotes = detailText.quotes;
 
   useEffect(() => {
     setSpotlightUrl(null);
 
-    if (!app || !app.enabled || !isListed(app) || !hasAccess(app, currentUser.permissions)) {
+    if (
+      !sourceApp ||
+      !sourceApp.enabled ||
+      !isListed(sourceApp) ||
+      !hasAccess(sourceApp, currentUser.permissions)
+    ) {
       return;
     }
 
     const preferredUrls = [
-      `/apps/${app.id}/lesson-spotlight.html`,
-      `/apps/${app.id}/game-spotlight.html`
+      `/apps/${sourceApp.id}/lesson-spotlight.html`,
+      `/apps/${sourceApp.id}/game-spotlight.html`
     ];
     let isActive = true;
 
@@ -74,22 +70,26 @@ export default function AppDetailPage() {
     return () => {
       isActive = false;
     };
-  }, [app]);
+  }, [sourceApp]);
 
   if (!id) {
     return <NotFoundPage />;
   }
 
-  if (!app || !app.enabled || !isListed(app)) {
+  if (!sourceApp || !sourceApp.enabled || !isListed(sourceApp)) {
     return <NotFoundPage />;
   }
 
-  if (!hasAccess(app, currentUser.permissions)) {
+  if (!hasAccess(sourceApp, currentUser.permissions)) {
     return <AccessDeniedPage />;
   }
 
+  if (!app) {
+    return <NotFoundPage />;
+  }
+
   const showSpotlight = spotlightUrl !== null;
-  const detailHue = app.name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) % 360;
+  const detailHue = app.id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) % 360;
   const detailStyle = { "--detail-hue": detailHue } as CSSProperties;
   const quoteIndex = app.id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) % quotes.length;
   const selectedQuote = quotes[quoteIndex];
@@ -112,12 +112,12 @@ export default function AppDetailPage() {
           </div>
         </div>
         <div className="detail-card detail-card--cta">
-          <div className="detail-card__eyebrow">Lesson Ready</div>
+          <div className="detail-card__eyebrow">{detailText.lessonReady}</div>
           <button
             className="btn btn-cta"
             onClick={() => window.open(`/run/${app.id}`, "_blank", "noopener,noreferrer")}
           >
-            开始学习
+            {detailText.startLearning}
           </button>
           <div className="detail-card__note">
             “{selectedQuote.text}” — {selectedQuote.author}
@@ -129,9 +129,9 @@ export default function AppDetailPage() {
         {showSpotlight ? (
           <div className="detail-main">
             <div className="detail-section-header">
-              <span className="detail-section-kicker">Lesson Spotlight</span>
-              <h2>课程介绍</h2>
-              <p>先看课程目标与示例，再进入训练。</p>
+              <span className="detail-section-kicker">{detailText.lessonSpotlight}</span>
+              <h2>{detailText.introTitle}</h2>
+              <p>{detailText.introDescription}</p>
             </div>
             <div className="spotlight-frame">
               <iframe

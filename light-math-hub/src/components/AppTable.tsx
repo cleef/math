@@ -1,20 +1,25 @@
 import { Link } from "react-router-dom";
 import type { AppRecord } from "../data/types";
 import Badge from "./Badge";
+import { useI18n } from "../i18n/I18nProvider";
+import { localizeAppRecord } from "../i18n/localizeAppRecord";
 
 export default function AppTable({ apps }: { apps: AppRecord[] }) {
+  const { locale, catalog } = useI18n();
+  const localizedApps = apps.map((app) => localizeAppRecord(app, locale));
+
   return (
     <table className="app-table">
       <thead>
         <tr>
-          <th>课程应用</th>
-          <th>维护方</th>
-          <th>状态</th>
-          <th>更新时间</th>
+          <th>{catalog.appTable.app}</th>
+          <th>{catalog.appTable.owner}</th>
+          <th>{catalog.appTable.status}</th>
+          <th>{catalog.appTable.updatedAt}</th>
         </tr>
       </thead>
       <tbody>
-        {apps.map((app) => (
+        {localizedApps.map((app) => (
           <tr key={app.id}>
             <td>
               <Link to={`/app/${app.id}`} className="app-link">

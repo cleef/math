@@ -4,17 +4,25 @@ import AppCardGrid from "../components/AppCardGrid";
 import Pagination from "../components/Pagination";
 import { currentUser } from "../data/currentUser";
 import { getVisibleApps } from "../data/appAccess";
+import { useI18n } from "../i18n/I18nProvider";
+import { localizeAppRecord } from "../i18n/localizeAppRecord";
 
 const PAGE_SIZE = 9;
 
 export default function AppListPage() {
+  const { locale, catalog } = useI18n();
+  const listText = catalog.list;
   const [searchParams, setSearchParams] = useSearchParams();
-  const query = (searchParams.get("q") ?? "").trim().toLowerCase();
+  const queryText = (searchParams.get("q") ?? "").trim();
+  const query = queryText.toLowerCase();
   const tagParam = (searchParams.get("tag") ?? "").trim();
   const pageParam = Number(searchParams.get("page") ?? "1");
   const page = Number.isNaN(pageParam) || pageParam < 1 ? 1 : pageParam;
 
-  const visibleApps = useMemo(() => getVisibleApps(currentUser.permissions), []);
+  const visibleApps = useMemo(
+    () => getVisibleApps(currentUser.permissions).map((app) => localizeAppRecord(app, locale)),
+    [locale]
+  );
 
   const availableTags = useMemo(() => {
     const tagSet = new Set<string>();
@@ -35,10 +43,13 @@ export default function AppListPage() {
       return result;
     }
     return result.filter((app) => {
-      return (
-        app.name.toLowerCase().includes(query) ||
-        app.description.toLowerCase().includes(query)
-      );
+      const searchable = [
+        app.name,
+        app.description,
+        app.longDescription,
+        ...(app.tags ?? [])
+      ].join(" ");
+      return searchable.toLowerCase().includes(query);
     });
   }, [activeTag, query, visibleApps]);
 
@@ -76,14 +87,14 @@ export default function AppListPage() {
     <section className="page">
       {availableTags.length > 0 ? (
         <div className="tag-filter">
-          <div className="tag-filter__label">知识分类</div>
+          <div className="tag-filter__label">{listText.tagFilterLabel}</div>
           <div className="tag-filter__chips">
             <button
               type="button"
               className={`tag-chip ${activeTag === "" ? "tag-chip--active" : ""}`}
               onClick={() => handleTagChange("")}
             >
-              全部
+              {listText.allTagLabel}
             </button>
             {availableTags.map((tag) => (
               <button
@@ -100,15 +111,18 @@ export default function AppListPage() {
       ) : null}
 
       <div className="filter-summary">
-        当前展示 {pagedApps.length} / {filteredApps.length}
-        {activeTag ? ` 个「${activeTag}」课程` : " 个课程"}
-        {query ? `（匹配关键词：${query}）` : ""}
+        {listText.filterSummary({
+          shown: pagedApps.length,
+          total: filteredApps.length,
+          activeTag,
+          query: queryText
+        })}
       </div>
 
       {pagedApps.length === 0 ? (
         <div className="empty-state">
-          <h2>未找到匹配课程</h2>
-          <p>请尝试其他关键词，或清空筛选条件。</p>
+          <h2>{listText.emptyTitle}</h2>
+          <p>{listText.emptyDescription}</p>
         </div>
       ) : (
         <AppCardGrid apps={pagedApps} />

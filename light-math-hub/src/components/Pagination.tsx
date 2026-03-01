@@ -1,3 +1,5 @@
+import { useI18n } from "../i18n/I18nProvider";
+
 type PaginationProps = {
   page: number;
   totalPages: number;
@@ -9,6 +11,9 @@ export default function Pagination({
   totalPages,
   onPageChange
 }: PaginationProps) {
+  const { catalog } = useI18n();
+  const paginationText = catalog.pagination;
+
   if (totalPages <= 1) {
     return null;
   }
@@ -16,13 +21,13 @@ export default function Pagination({
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
-    <div className="pagination" role="navigation" aria-label="分页">
+    <div className="pagination" role="navigation" aria-label={paginationText.ariaLabel}>
       <button
         className="btn btn-secondary"
         disabled={page === 1}
         onClick={() => onPageChange(page - 1)}
       >
-        上一页
+        {paginationText.previous}
       </button>
       <div className="pagination__pages">
         {pages.map((pageNumber) => (
@@ -44,7 +49,7 @@ export default function Pagination({
         disabled={page === totalPages}
         onClick={() => onPageChange(page + 1)}
       >
-        下一页
+        {paginationText.next}
       </button>
     </div>
   );

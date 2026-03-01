@@ -1,0 +1,9 @@
+{
+  "id": "density",
+  "name": "密度可视化实验",
+  "version": "1.0.0",
+  "description": "通过固定 1L 体积直观观察密度与质量关系。",
+  "icon": "⚖️",
+  "entry": "index.html",
+  "owner": "Light Maths Team"
+}

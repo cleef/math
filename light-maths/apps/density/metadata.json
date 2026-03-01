@@ -1,0 +1,5 @@
+{
+  "name": "Density Demo",
+  "description": "Interactive simulation demonstrating density with a 1L cube of sand.",
+  "requestFramePermissions": []
+}

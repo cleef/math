@@ -1,0 +1,5 @@
+{
+  "name": "Algebra Balance Beam",
+  "description": "An interactive algebraic balance beam to visualize and solve linear equations using positive and negative quantities.",
+  "requestFramePermissions": []
+}

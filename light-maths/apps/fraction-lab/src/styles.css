@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600&display=swap");
-
 :root {
   --paper: #fcf7ea;
   --paper-deep: #f5ecd8;
@@ -10,6 +8,8 @@
   --accent-soft: #c9813f;
   --mint: #2f8f7f;
   --shadow: 0 14px 32px rgba(86, 58, 25, 0.14);
+  --font-cjk-ui: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", "Roboto",
+    "Droid Sans Fallback", "WenQuanYi Micro Hei", sans-serif;
 }
 
 * {
@@ -24,7 +24,7 @@ body {
 
 body {
   color: var(--ink);
-  font-family: "Noto Serif SC", serif;
+  font-family: var(--font-cjk-ui);
   background:
     radial-gradient(circle at 12% -2%, rgba(201, 129, 63, 0.18), transparent 32%),
     radial-gradient(circle at 88% 0, rgba(47, 143, 127, 0.14), transparent 35%),
@@ -48,7 +48,7 @@ h1,
 h2,
 h3 {
   margin: 0;
-  font-family: "Ma Shan Zheng", cursive;
+  font-family: var(--font-cjk-ui);
   letter-spacing: 0.03em;
 }
 
@@ -197,7 +197,7 @@ code {
 }
 
 .question-text {
-  font-family: "Ma Shan Zheng", cursive;
+  font-family: var(--font-cjk-ui);
   font-size: 1.42rem;
 }
 

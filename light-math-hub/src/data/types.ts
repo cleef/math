@@ -1,3 +1,15 @@
+import type { Locale } from "../i18n/types";
+
+export type AppLocaleFields = {
+  name?: string;
+  description?: string;
+  longDescription?: string;
+  usage?: string;
+  owner?: string;
+  status?: string;
+  tags?: string[];
+};
+
 export type AppRecord = {
   id: string;
   name: string;
@@ -13,4 +25,5 @@ export type AppRecord = {
   tags?: string[];
   permissions?: string[];
   entryPath: string;
+  i18n?: Partial<Record<Locale, AppLocaleFields>>;
 };

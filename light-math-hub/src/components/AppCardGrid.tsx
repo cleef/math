@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import type { AppRecord } from "../data/types";
 import Badge from "./Badge";
 import AppIconBadge from "./AppIconBadge";
+import { useI18n } from "../i18n/I18nProvider";
 
 const getHue = (name: string) => {
   const seed = Array.from(name).reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -10,6 +11,8 @@ const getHue = (name: string) => {
 };
 
 export default function AppCardGrid({ apps }: { apps: AppRecord[] }) {
+  const { catalog } = useI18n();
+
   return (
     <div className="card-grid">
       {apps.map((app) => {
@@ -17,11 +20,8 @@ export default function AppCardGrid({ apps }: { apps: AppRecord[] }) {
         const style = { "--card-hue": hue } as CSSProperties;
         return (
           <Link to={`/app/${app.id}`} className="app-card" key={app.id} style={style}>
-            <div className="app-card__media">
-              <div className="app-card__image" aria-hidden="true">
-                <div className="app-card__image-glow" />
-                <AppIconBadge app={app} baseClassName="app-card__image-mark" />
-              </div>
+            <div className="app-card__media" aria-hidden="true">
+              <AppIconBadge app={app} baseClassName="app-card__icon" />
             </div>
             <div className="app-card__content">
               <div className="app-card__title">{app.name}</div>
@@ -30,7 +30,7 @@ export default function AppCardGrid({ apps }: { apps: AppRecord[] }) {
                 {app.owner ? (
                   <span className="app-card__owner">{app.owner}</span>
                 ) : (
-                  <span className="app-card__owner">Math Team</span>
+                  <span className="app-card__owner">{catalog.appCard.defaultOwner}</span>
                 )}
                 {app.status ? <Badge label={app.status} /> : null}
               </div>

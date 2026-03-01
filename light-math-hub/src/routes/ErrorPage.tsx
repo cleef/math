@@ -1,17 +1,20 @@
 import { Link } from "react-router-dom";
+import { useI18n } from "../i18n/I18nProvider";
 
 export default function ErrorPage() {
+  const { catalog } = useI18n();
+
   return (
     <div className="fullscreen">
       <div className="state-card">
-        <div className="state-title">课程加载失败</div>
-        <p>启动课程时遇到异常，请稍后重试。</p>
+        <div className="state-title">{catalog.statePages.loadErrorTitle}</div>
+        <p>{catalog.statePages.loadErrorDescription}</p>
         <div className="state-actions">
           <Link to="/" className="btn btn-secondary">
-            返回数学中心
+            {catalog.statePages.backHome}
           </Link>
           <button className="btn btn-primary" onClick={() => window.location.reload()}>
-            重新加载
+            {catalog.statePages.reload}
           </button>
         </div>
       </div>
