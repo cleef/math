@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>秦培培 - 个人简历海报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Cormorant+Garamond:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1d2530;
+      --muted: #5c6674;
+      --paper: #f4f1ec;
+      --panel: #fbfaf7;
+      --line: #cbbda8;
+      --gold: #ab8358;
+      --deep: #243142;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background:
+        radial-gradient(circle at 15% 20%, #ece5da 0%, transparent 38%),
+        radial-gradient(circle at 88% 80%, #dfd4c1 0%, transparent 35%),
+        #e7e0d5;
+      color: var(--ink);
+      font-family: "Noto Sans SC", sans-serif;
+    }
+
+    .poster {
+      width: min(100%, 980px);
+      min-height: min(1380px, 96vh);
+      background: var(--paper);
+      border: 1px solid #dbcdb8;
+      display: grid;
+      grid-template-columns: 32% 68%;
+      box-shadow: 0 24px 60px rgba(34, 30, 24, 0.22);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .poster::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(transparent 98%, rgba(0, 0, 0, 0.015) 100%);
+      background-size: 100% 8px;
+      pointer-events: none;
+    }
+
+    .left {
+      background: linear-gradient(160deg, #1f2b3c 0%, #18212f 60%, #131a26 100%);
+      color: #edf0f3;
+      padding: 42px 28px 34px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      position: relative;
+    }
+
+    .left::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent, #b99b72 10%, #b99b72 90%, transparent);
+    }
+
+    .avatar {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border: 1px solid rgba(237, 240, 243, 0.28);
+      padding: 6px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(1.05) saturate(0.9);
+    }
+
+    .name {
+      margin: 0;
+      font-size: 46px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .ename {
+      margin: 8px 0 0;
+      font-size: 16px;
+      color: #b8c2cf;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-family: "Cormorant Garamond", serif;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-top: 16px;
+      border: 1px solid rgba(185, 194, 207, 0.45);
+      padding: 6px 11px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: #d4dbe4;
+    }
+
+    .block h3 {
+      margin: 0 0 10px;
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: #c8a57b;
+      font-weight: 700;
+    }
+
+    .line {
+      margin: 0 0 8px;
+      font-size: 13px;
+      line-height: 1.65;
+      color: #e3e8ef;
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skill {
+      border: 1px solid rgba(216, 188, 149, 0.6);
+      color: #f4e2ca;
+      font-size: 12px;
+      padding: 4px 10px;
+    }
+
+    .right {
+      padding: 42px 42px 34px;
+      background:
+        linear-gradient(140deg, rgba(255, 255, 255, 0.5), transparent 45%),
+        var(--panel);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .headline {
+      border-left: 5px solid var(--gold);
+      padding: 8px 0 8px 18px;
+      background: linear-gradient(90deg, rgba(171, 131, 88, 0.08), transparent 68%);
+    }
+
+    .headline p {
+      margin: 0;
+      color: #3f4a57;
+      font-size: 17px;
+      line-height: 1.9;
+      max-width: 96%;
+      font-weight: 500;
+    }
+
+    .section {
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+    }
+
+    .section h4 {
+      margin: 0 0 12px;
+      font-size: 15px;
+      letter-spacing: 1px;
+      color: #8a6b46;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .date {
+      font-size: 12px;
+      color: #6f7782;
+      padding-top: 2px;
+      letter-spacing: 0.4px;
+    }
+
+    .card {
+      border: 1px solid #dfd4c4;
+      background: #fffdfa;
+      padding: 11px 12px;
+    }
+
+    .card .title {
+      margin: 0;
+      font-weight: 700;
+      font-size: 15px;
+      color: #2f3c4c;
+    }
+
+    .card .sub {
+      margin: 3px 0 0;
+      font-size: 13px;
+      color: #6f7782;
+    }
+
+    .quote {
+      margin: 0;
+      border: 1px dashed #d6c7b3;
+      padding: 16px 18px;
+      background: #fcf9f4;
+      color: #4d5662;
+      line-height: 1.9;
+      font-size: 15px;
+    }
+
+    .cert {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .cert div {
+      border: 1px solid #dfd4c4;
+      padding: 10px;
+      background: #fffdfa;
+      font-size: 13px;
+      color: #404a56;
+      line-height: 1.7;
+    }
+
+    .footer {
+      margin-top: auto;
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+      color: #7b6f61;
+      font-size: 12px;
+      letter-spacing: 0.6px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      .poster {
+        grid-template-columns: 1fr;
+      }
+
+      .left::after {
+        display: none;
+      }
+
+      .item {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+
+      .poster {
+        box-shadow: none;
+        border: 0;
+        width: 100%;
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <article class="poster">
+    <aside class="left">
+      <div class="avatar">
+        <img src="peipei2.JPG" alt="秦培培形象照" />
+      </div>
+
+      <div>
+        <h1 class="name">秦培培</h1>
+        <p class="ename">QIN PEIPEI</p>
+        <span class="tag">瑜伽教练 / 10年瑜伽练习经验 / 5年教学经验 / 深受学员喜爱 </span>
+      </div>
+
+      <section class="block">
+        <h3>CORE SKILLS</h3>
+        <div class="skills">
+          <span class="skill">瑜伽</span>
+          <span class="skill">普拉提</span>
+          <span class="skill">体式纠正</span>
+          <span class="skill">呼吸训练</span>
+          <span class="skill">解剖学</span>
+        </div>
+      </section>
+    </aside>
+
+    <section class="right">
+      <header class="headline">
+        <p>
+            一呼一吸间，是对生命的感恩，亦是对执念的放下；在瑜伽的练习中，读懂柔软是另一种强大；在体式的坚持里，锤炼意志力、调和身心灵。
+        </p>
+      </header>
+
+      <section class="section">
+        <h4>工作经历 EXPERIENCE</h4>
+        <div class="timeline">
+         <div class="item">
+            <div class="date">2021</div>
+            <div class="card">
+                <p class="title">TB瑜伽普拉提 | 瑜伽教练</p>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="date">2022</div>
+            <div class="card">
+              <p class="title">百分佰 | 瑜伽教练</p>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="date">2025</div>
+            <div class="card">
+              <p class="title">乐动力 | 瑜伽教练</p>
+            </div>
+          </div>
+
+
+        </div>
+      </section>
+
+      <section class="section">
+        <h4>教学理念 PHILOSOPHY</h4>
+        <p class="quote">
+          “练习瑜伽，不只是追求动作完成度，更是在呼吸和专注中建立稳定内核。瑜伽无终点，愿与每一位学员同行，在日复一日的练习中，遇见更好的自己。”
+        </p>
+      </section>
+
+      <section class="section">
+        <h4>资质认证 CERTIFICATIONS</h4>
+        <div class="cert">
+          <div>亚洲平衡波学院<br />TBWAVE 200小时</div>
+          <div>李一<br />普拉提专业培训认证</div>
+          <div>栗子瑜伽解剖学<br />专业进修认证</div>
+        </div>
+      </section>
+
+      <div class="footer">
+        <span>QIN PEIPEI RESUME</span>
+        <span>2026-03</span>
+      </div>
+    </section>
+  </article>
+</body>
+</html>
