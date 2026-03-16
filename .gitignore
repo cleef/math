@@ -11,5 +11,5 @@ node_modules/
 .DS_Store
 
 # Memory logs
-memory/
-MEMORY.md
+
+.history/
