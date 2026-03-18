@@ -1,0 +1,5 @@
+{
+  "name": "Bias Variance Range",
+  "description": "Interactive shooting-range demo for comparing low/high bias and low/high variance.",
+  "requestFramePermissions": []
+}

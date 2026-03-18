@@ -98,5 +98,30 @@
         "tags": ["Algebra", "Equations", "Balance Method"]
       }
     }
+  },
+  {
+    "id": "bias-variance-range",
+    "name": "偏差与方差打靶实验",
+    "icon": "🎯",
+    "description": "通过四类枪手的打靶分布，直观理解偏差与方差的差别。",
+    "longDescription": "围绕“是否打得准、是否打得稳”设计，学生可切换四种 Bias + Variance 组合，连打 10 枪后观察平均落点与散布范围。",
+    "usage": "## 使用方式\n- 先选择一种枪手类型\n- 点击靶纸连续打满 10 枪\n- 观察平均落点与散布程度，并判断是偏差大还是方差大\n\n## 教学建议\n- 先让学生只看名字猜测分布形态\n- 再分别打完四种枪手进行对比\n- 最后总结“Bias 看中心偏移，Variance 看散布范围”",
+    "owner": "Light Maths Team",
+    "lastUpdated": "2026-03-17",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": ["统计直觉", "偏差", "方差"],
+    "permissions": ["light.app.bias.variance.range"],
+    "entryPath": "/apps/bias-variance-range/",
+    "i18n": {
+      "en-US": {
+        "name": "Bias Variance Range",
+        "description": "Compare four shooter patterns to understand bias and variance through target shots.",
+        "longDescription": "Students switch among four Bias + Variance combinations, fire 10 shots, and compare mean impact position with shot spread.",
+        "usage": "## How to use\n- Pick one shooter type first\n- Click the target until all 10 shots are fired\n- Compare the mean impact with the spread to decide whether bias or variance is large\n\n## Teaching tips\n- Ask students to predict the pattern from the shooter name first\n- Run all four shooters for side-by-side comparison\n- Summarize: bias is about offset from center, variance is about spread",
+        "tags": ["Statistics Intuition", "Bias", "Variance"]
+      }
+    }
   }
 ]

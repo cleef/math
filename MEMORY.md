@@ -37,3 +37,4 @@
 - `cube-surface-lab` page-2 cube now uses true geometry-based 3D door rotation with perspective projection (not CSS pseudo-3D), including depth-sorted faces and projected edge/scissor paths.
 - `cube-surface-lab` net orientation mapping now enforces expected letter orientation (`F` center reference, `U` above, `R` right) by corrected east/west fold direction.
 - `algebra-balance` is now integrated into Hub (`apps.json`) and deployed on `math.chat1.co` at `/apps/algebra-balance/`.
+- `bias-variance-range` is now integrated into Hub (`apps.json`) as a target-shooting demo for Bias vs Variance at `/apps/bias-variance-range/`.
