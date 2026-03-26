@@ -38,3 +38,4 @@
 - `cube-surface-lab` net orientation mapping now enforces expected letter orientation (`F` center reference, `U` above, `R` right) by corrected east/west fold direction.
 - `algebra-balance` is now integrated into Hub (`apps.json`) and deployed on `math.chat1.co` at `/apps/algebra-balance/`.
 - `bias-variance-range` is now integrated into Hub (`apps.json`) as a target-shooting demo for Bias vs Variance at `/apps/bias-variance-range/`.
+- `speed-chase-lab` is now integrated into Hub (`apps.json`) as a pursuit-problem visualizer at `/apps/speed-chase-lab/`.

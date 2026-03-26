@@ -75,6 +75,31 @@
     }
   },
   {
+    "id": "speed-chase-lab",
+    "name": "银河追击实验",
+    "icon": "🚀",
+    "description": "用两艘飞船的追赶过程，直观理解追及问题、相对速度和函数图像。",
+    "longDescription": "围绕“先出发、后追赶”的经典路程问题设计。学生可以调节先出发时间与两船速度，实时观察星空追逐、数据表和函数曲线如何同步变化。",
+    "usage": "## 使用方式\n- 调整先出发时间、人类飞船速度、三体飞船速度\n- 点击“开始追赶”观察飞船位置变化\n- 对照左侧表格和右侧曲线，总结剩余距离如何随时间变化\n\n## 教学建议\n- 先让学生口头说出初始相距和每分钟追近多少\n- 再用动画验证表格与图像是否一致\n- 最后写出“剩余距离 = 初始距离 - 相对速度 × t”",
+    "owner": "Light Maths Team",
+    "lastUpdated": "2026-03-26",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": ["路程问题", "追及", "函数直觉"],
+    "permissions": ["light.app.speed.chase.lab"],
+    "entryPath": "/apps/speed-chase-lab/",
+    "i18n": {
+      "en-US": {
+        "name": "Galaxy Chase Lab",
+        "description": "Use a spaceship pursuit story to understand catch-up problems, relative speed, and function graphs.",
+        "longDescription": "Built around the classic head-start pursuit problem. Students adjust the lead time and both speeds, then watch the starfield chase, data table, and graph update together.",
+        "usage": "## How to use\n- Adjust lead time, human ship speed, and Trisolaran ship speed\n- Click \"Start Chase\" to watch the pursuit\n- Compare the table and the graph to summarize how the remaining distance changes over time\n\n## Teaching tips\n- Ask students to say the initial gap and relative speed first\n- Use the animation to verify the table and graph together\n- Finish with: remaining distance = initial distance - relative speed × t",
+        "tags": ["Distance Problems", "Pursuit", "Function Intuition"]
+      }
+    }
+  },
+  {
     "id": "algebra-balance",
     "name": "等式平衡实验",
     "icon": "🎈",
@@ -96,6 +121,31 @@
         "longDescription": "Students manipulate terms on both sides, observe cancellation hints, and learn why applying the same operation to both sides preserves equation balance.",
         "usage": "## How to use\n- Click \"Edit Problem\" to enter equation coefficients and x value\n- Drag positive/negative terms into left or right hidden sensing zones\n- Watch beam tilt and cancellation fading cues on each side\n\n## Teaching tips\n- Ask students to predict which side is heavier first\n- Demonstrate same-operation-on-both-sides with drag actions\n- Use cancellation cues to guide collecting like terms",
         "tags": ["Algebra", "Equations", "Balance Method"]
+      }
+    }
+  },
+  {
+    "id": "cosmic-chase",
+    "name": "宇宙追及实验室",
+    "icon": "🛸",
+    "description": "用星空飞船的追赶演示，直观理解追及问题与线性函数图像。",
+    "longDescription": "围绕先出发、后追赶的经典路程问题设计。学生可调节先出发时间与两船速度，实时观察星空飞船位置、时间记录表和函数曲线三者联动变化。",
+    "usage": "## 使用方式\n- 调整先出发时间、人类飞船速度、三体飞船速度\n- 点击【开始追赶】观察星空中的追及过程\n- 对照左侧表格和右侧曲线，总结剩余距离随时间变化的规律\n\n## 教学建议\n- 先让学生口头说出初始相距和每分钟追近多少\n- 再用动画验证表格与图像是否一致\n- 最后引导学生写出函数关系式：剩余距离 = 初始距离 − 每分钟追近 × t",
+    "owner": "Light Maths Team",
+    "lastUpdated": "2026-03-26",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": ["路程问题", "追及", "函数直觉", "小学"],
+    "permissions": ["light.app.cosmic.chase"],
+    "entryPath": "/apps/cosmic-chase/",
+    "i18n": {
+      "en-US": {
+        "name": "Cosmic Chase Lab",
+        "description": "Watch spaceships race through the stars to understand catch-up problems and linear functions.",
+        "longDescription": "Built around the classic head-start pursuit problem. Students adjust lead time and both ship speeds, then watch the starfield chase, data table, and function graph update together in real time.",
+        "usage": "## How to use\n- Adjust lead time, human ship speed, and Trisolaran ship speed\n- Click \"Start Chase\" to watch the pursuit\n- Compare the table and graph to discover how remaining distance changes with time\n\n## Teaching tips\n- Ask students to state the initial gap and relative speed first\n- Use the animation to verify the table and graph together\n- Guide students to write: remaining distance = initial distance − relative speed × t",
+        "tags": ["Distance Problems", "Pursuit", "Function Intuition", "Elementary"]
       }
     }
   },
