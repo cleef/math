@@ -6,7 +6,7 @@ export const currentUser = {
     "light.app.fraction.lab",
     "light.app.cube.surface.lab",
     "light.app.density.lab",
-    "light.app.speed.chase.lab",
+    "light.app.cosmic.chase",
     "light.app.algebra.balance",
     "light.app.bias.variance.range"
   ]

@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import type { CSSProperties } from "react";
+import type { CSSProperties, KeyboardEvent, MouseEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import type { AppRecord } from "../data/types";
 import Badge from "./Badge";
 import AppIconBadge from "./AppIconBadge";
@@ -12,6 +12,22 @@ const getHue = (name: string) => {
 
 export default function AppCardGrid({ apps }: { apps: AppRecord[] }) {
   const { catalog } = useI18n();
+  const navigate = useNavigate();
+
+  const handleLaunch = (appId: string) => {
+    navigate(`/run/${appId}`);
+  };
+
+  const handleCardKeyDown = (event: KeyboardEvent<HTMLElement>, appId: string) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleLaunch(appId);
+    }
+  };
+
+  const stopCardLaunch = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.stopPropagation();
+  };
 
   return (
     <div className="card-grid">
@@ -19,7 +35,15 @@ export default function AppCardGrid({ apps }: { apps: AppRecord[] }) {
         const hue = getHue(app.name);
         const style = { "--card-hue": hue } as CSSProperties;
         return (
-          <Link to={`/app/${app.id}`} className="app-card" key={app.id} style={style}>
+          <article
+            className="app-card"
+            key={app.id}
+            style={style}
+            role="link"
+            tabIndex={0}
+            onClick={() => handleLaunch(app.id)}
+            onKeyDown={(event) => handleCardKeyDown(event, app.id)}
+          >
             <div className="app-card__media" aria-hidden="true">
               <AppIconBadge app={app} baseClassName="app-card__icon" />
             </div>
@@ -35,7 +59,18 @@ export default function AppCardGrid({ apps }: { apps: AppRecord[] }) {
                 {app.status ? <Badge label={app.status} /> : null}
               </div>
             </div>
-          </Link>
+            <div className="app-card__hover-actions">
+              <Link
+                to={`/app/${app.id}`}
+                className="app-card__intro-btn"
+                onClick={stopCardLaunch}
+                onMouseDown={stopCardLaunch}
+                onKeyDown={(event) => event.stopPropagation()}
+              >
+                {catalog.appCard.introButton}
+              </Link>
+            </div>
+          </article>
         );
       })}
     </div>

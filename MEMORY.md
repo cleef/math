@@ -38,4 +38,6 @@
 - `cube-surface-lab` net orientation mapping now enforces expected letter orientation (`F` center reference, `U` above, `R` right) by corrected east/west fold direction.
 - `algebra-balance` is now integrated into Hub (`apps.json`) and deployed on `math.chat1.co` at `/apps/algebra-balance/`.
 - `bias-variance-range` is now integrated into Hub (`apps.json`) as a target-shooting demo for Bias vs Variance at `/apps/bias-variance-range/`.
-- `speed-chase-lab` is now integrated into Hub (`apps.json`) as a pursuit-problem visualizer at `/apps/speed-chase-lab/`.
+- Active pursuit app in Hub is now `cosmic-chase`; `speed-chase-lab` remains in the repo but is disabled/unlisted in Hub registry.
+- Hub list cards now launch apps directly via `/run/:id`; the detail page is accessed from a hover/focus-only card button.
+- Hub category tags are intentionally limited to one tag per app to keep the filter set compact.

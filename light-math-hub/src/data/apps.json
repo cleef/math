@@ -11,7 +11,7 @@
     "listed": true,
     "enabled": true,
     "status": "New",
-    "tags": ["几何", "立方体", "表面积"],
+    "tags": ["几何"],
     "permissions": ["light.app.cube.surface.lab"],
     "entryPath": "/apps/cube-surface-lab/",
     "i18n": {
@@ -20,7 +20,7 @@
         "description": "Understand cube surface area through cutting and unfolding animations.",
         "longDescription": "Designed around cube nets and surface-area calculation, with step-by-step edge cuts, door-style unfolding, and all 11 net patterns.",
         "usage": "## How to use\n- Click \"Start Learning\" to open the lab\n- Cut edges in sequence during the cut phase\n- Observe before/after unfolding and calculate surface area\n\n## Teaching tips\n- Let students predict the net first\n- Verify and correct through animation\n- Return to the formula for transfer practice",
-        "tags": ["Geometry", "Cube", "Surface Area"]
+        "tags": ["Geometry"]
       }
     }
   },
@@ -36,7 +36,7 @@
     "listed": true,
     "enabled": true,
     "status": "Featured",
-    "tags": ["分数", "小学", "课堂练习"],
+    "tags": ["分数"],
     "permissions": ["light.app.fraction.lab"],
     "entryPath": "/apps/fraction-lab/",
     "i18n": {
@@ -45,7 +45,7 @@
         "description": "Fraction arithmetic training for elementary learners with guided hints and instant feedback.",
         "longDescription": "Built around four core skills: same-denominator operations, unlike-denominator operations, reduction, and common denominators. Suitable for classroom demos and self-practice.",
         "usage": "## How to use\n- Click \"Start Learning\" to enter practice mode\n- Read worked examples first, then solve exercises\n- Submit to view instant explanations\n\n## Teaching tips\n- Demonstrate 2 questions first in class\n- Let students finish the remaining set in groups\n- Summarize high-frequency mistakes at the end",
-        "tags": ["Fractions", "Elementary", "Classroom Practice"]
+        "tags": ["Fractions"]
       }
     }
   },
@@ -61,7 +61,7 @@
     "listed": true,
     "enabled": true,
     "status": "New",
-    "tags": ["物理量", "密度", "可视化实验"],
+    "tags": ["密度"],
     "permissions": ["light.app.density.lab"],
     "entryPath": "/apps/density/",
     "i18n": {
@@ -70,7 +70,7 @@
         "description": "See how density changes mass under a fixed 1L volume.",
         "longDescription": "Dynamic particle cubes and live mass readings help students understand the density formula ρ = m / V and differences across materials.",
         "usage": "## How to use\n- Click \"Start Learning\" to enter the lab\n- Pick a material preset, then drag the density slider\n- Observe and record mass changes in a 1L container\n\n## Teaching tips\n- Ask students to predict relative masses first\n- Use visualization results to verify and discuss causes\n- Return to formula-based exercises for reinforcement",
-        "tags": ["Physical Quantities", "Density", "Visual Lab"]
+        "tags": ["Density"]
       }
     }
   },
@@ -83,10 +83,10 @@
     "usage": "## 使用方式\n- 调整先出发时间、人类飞船速度、三体飞船速度\n- 点击“开始追赶”观察飞船位置变化\n- 对照左侧表格和右侧曲线，总结剩余距离如何随时间变化\n\n## 教学建议\n- 先让学生口头说出初始相距和每分钟追近多少\n- 再用动画验证表格与图像是否一致\n- 最后写出“剩余距离 = 初始距离 - 相对速度 × t”",
     "owner": "Light Maths Team",
     "lastUpdated": "2026-03-26",
-    "listed": true,
-    "enabled": true,
+    "listed": false,
+    "enabled": false,
     "status": "New",
-    "tags": ["路程问题", "追及", "函数直觉"],
+    "tags": ["追及"],
     "permissions": ["light.app.speed.chase.lab"],
     "entryPath": "/apps/speed-chase-lab/",
     "i18n": {
@@ -95,7 +95,7 @@
         "description": "Use a spaceship pursuit story to understand catch-up problems, relative speed, and function graphs.",
         "longDescription": "Built around the classic head-start pursuit problem. Students adjust the lead time and both speeds, then watch the starfield chase, data table, and graph update together.",
         "usage": "## How to use\n- Adjust lead time, human ship speed, and Trisolaran ship speed\n- Click \"Start Chase\" to watch the pursuit\n- Compare the table and the graph to summarize how the remaining distance changes over time\n\n## Teaching tips\n- Ask students to say the initial gap and relative speed first\n- Use the animation to verify the table and graph together\n- Finish with: remaining distance = initial distance - relative speed × t",
-        "tags": ["Distance Problems", "Pursuit", "Function Intuition"]
+        "tags": ["Pursuit"]
       }
     }
   },
@@ -111,7 +111,7 @@
     "listed": true,
     "enabled": true,
     "status": "New",
-    "tags": ["代数", "方程", "平衡法"],
+    "tags": ["代数"],
     "permissions": ["light.app.algebra.balance"],
     "entryPath": "/apps/algebra-balance/",
     "i18n": {
@@ -120,7 +120,7 @@
         "description": "Use a balance beam with positive and negative terms to understand linear-equation balance operations.",
         "longDescription": "Students manipulate terms on both sides, observe cancellation hints, and learn why applying the same operation to both sides preserves equation balance.",
         "usage": "## How to use\n- Click \"Edit Problem\" to enter equation coefficients and x value\n- Drag positive/negative terms into left or right hidden sensing zones\n- Watch beam tilt and cancellation fading cues on each side\n\n## Teaching tips\n- Ask students to predict which side is heavier first\n- Demonstrate same-operation-on-both-sides with drag actions\n- Use cancellation cues to guide collecting like terms",
-        "tags": ["Algebra", "Equations", "Balance Method"]
+        "tags": ["Algebra"]
       }
     }
   },
@@ -136,7 +136,7 @@
     "listed": true,
     "enabled": true,
     "status": "New",
-    "tags": ["路程问题", "追及", "函数直觉", "小学"],
+    "tags": ["追及"],
     "permissions": ["light.app.cosmic.chase"],
     "entryPath": "/apps/cosmic-chase/",
     "i18n": {
@@ -145,7 +145,7 @@
         "description": "Watch spaceships race through the stars to understand catch-up problems and linear functions.",
         "longDescription": "Built around the classic head-start pursuit problem. Students adjust lead time and both ship speeds, then watch the starfield chase, data table, and function graph update together in real time.",
         "usage": "## How to use\n- Adjust lead time, human ship speed, and Trisolaran ship speed\n- Click \"Start Chase\" to watch the pursuit\n- Compare the table and graph to discover how remaining distance changes with time\n\n## Teaching tips\n- Ask students to state the initial gap and relative speed first\n- Use the animation to verify the table and graph together\n- Guide students to write: remaining distance = initial distance − relative speed × t",
-        "tags": ["Distance Problems", "Pursuit", "Function Intuition", "Elementary"]
+        "tags": ["Pursuit"]
       }
     }
   },
@@ -161,7 +161,7 @@
     "listed": true,
     "enabled": true,
     "status": "New",
-    "tags": ["统计直觉", "偏差", "方差"],
+    "tags": ["统计"],
     "permissions": ["light.app.bias.variance.range"],
     "entryPath": "/apps/bias-variance-range/",
     "i18n": {
@@ -170,7 +170,7 @@
         "description": "Compare four shooter patterns to understand bias and variance through target shots.",
         "longDescription": "Students switch among four Bias + Variance combinations, fire 10 shots, and compare mean impact position with shot spread.",
         "usage": "## How to use\n- Pick one shooter type first\n- Click the target until all 10 shots are fired\n- Compare the mean impact with the spread to decide whether bias or variance is large\n\n## Teaching tips\n- Ask students to predict the pattern from the shooter name first\n- Run all four shooters for side-by-side comparison\n- Summarize: bias is about offset from center, variance is about spread",
-        "tags": ["Statistics Intuition", "Bias", "Variance"]
+        "tags": ["Statistics"]
       }
     }
   }
