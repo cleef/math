@@ -46,6 +46,36 @@ const STARS = Array.from({ length: 90 }, (_, i) => ({
   delay: (Math.sin(i * 19.7) * 0.5 + 0.5) * 4
 }));
 
+// ─── Advanced Mode Constants ─────────────────────────────────────────────────
+
+const ADV_HUMAN  = 40;   // km/min
+const ADV_HS     = 5;    // head-start minutes
+const ADV_P1_SPD = 50;   // fleet phase-1 speed
+const ADV_P2_SPD = 70;   // fleet phase-2 speed
+const ADV_P1_DUR = 5;    // phase-1 duration (min)
+
+const ADV_INIT_GAP  = ADV_HS * ADV_HUMAN;                      // 200 km
+const ADV_P1_REL    = ADV_P1_SPD - ADV_HUMAN;                  // 10 km/min
+const ADV_P1_CLOSED = ADV_P1_REL * ADV_P1_DUR;                 // 50 km
+const ADV_GAP2      = ADV_INIT_GAP - ADV_P1_CLOSED;            // 150 km
+const ADV_P2_REL    = ADV_P2_SPD - ADV_HUMAN;                  // 30 km/min
+const ADV_P2_DUR    = ADV_GAP2 / ADV_P2_REL;                   // 5 min
+const ADV_FLEET_TOT = ADV_P1_DUR + ADV_P2_DUR;                 // 10 min
+const ADV_TOT_TIME  = ADV_HS + ADV_FLEET_TOT;                  // 15 min
+const ADV_TRACK_MAX = ADV_HUMAN * ADV_TOT_TIME * 1.1;          // 660 km
+
+function advFleetPos(sim: number): number {
+  const ft = Math.max(0, sim - ADV_HS);
+  if (ft <= ADV_P1_DUR) return ADV_P1_SPD * ft;
+  return ADV_P1_SPD * ADV_P1_DUR + ADV_P2_SPD * (ft - ADV_P1_DUR);
+}
+
+function advGap(sim: number): number {
+  const ft = Math.max(0, sim - ADV_HS);
+  if (ft <= ADV_P1_DUR) return ADV_INIT_GAP - ADV_P1_REL * ft;
+  return Math.max(0, ADV_GAP2 - ADV_P2_REL * (ft - ADV_P1_DUR));
+}
+
 // ─── StarField ───────────────────────────────────────────────────────────────
 
 function StarField() {
@@ -541,8 +571,366 @@ function CosmicChaseApp() {
   );
 }
 
+// ─── AdvChart ────────────────────────────────────────────────────────────────
+
+function AdvChart({ fleetTime, isDone }: { fleetTime: number; isDone: boolean }) {
+  const W = 420, H = 240, ML = 52, MR = 24, MT = 30, MB = 48;
+  const IW = W - ML - MR, IH = H - MT - MB;
+  const xs = (t: number) => (t / 10) * IW;
+  const ys = (d: number) => IH - (d / 210) * IH;
+  const ft = Math.min(fleetTime, 10);
+  const curGap =
+    ft <= ADV_P1_DUR
+      ? ADV_INIT_GAP - ADV_P1_REL * ft
+      : Math.max(0, ADV_GAP2 - ADV_P2_REL * (ft - ADV_P1_DUR));
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} width="100%" className="chase-chart">
+      <defs>
+        <clipPath id="adv-clip"><rect x={0} y={0} width={IW} height={IH} /></clipPath>
+      </defs>
+      <g transform={`translate(${ML},${MT})`}>
+        {/* Phase background bands */}
+        <rect x={xs(0)} y={0} width={xs(5)} height={IH} fill="rgba(255,112,67,0.07)" />
+        <rect x={xs(5)} y={0} width={xs(5)} height={IH} fill="rgba(255,23,68,0.07)" />
+        {/* Grid */}
+        {[2,4,6,8,10].map(t =>
+          <line key={t} x1={xs(t)} y1={0} x2={xs(t)} y2={IH}
+            stroke="rgba(255,255,255,0.07)" strokeWidth={1} />
+        )}
+        {[50,100,150,200].map(d =>
+          <line key={d} x1={0} y1={ys(d)} x2={IW} y2={ys(d)}
+            stroke="rgba(255,255,255,0.07)" strokeWidth={1} />
+        )}
+        <g clipPath="url(#adv-clip)">
+          {/* Phase 1 line — shallow slope */}
+          <line x1={xs(0)} y1={ys(200)} x2={xs(5)} y2={ys(150)}
+            stroke="#ff7043" strokeWidth={3} strokeLinecap="round" />
+          {/* Phase 2 line — steep slope */}
+          <line x1={xs(5)} y1={ys(150)} x2={xs(10)} y2={ys(0)}
+            stroke="#ff1744" strokeWidth={3} strokeLinecap="round" />
+          {/* Speed-change divider */}
+          <line x1={xs(5)} y1={0} x2={xs(5)} y2={IH}
+            stroke="rgba(255,215,64,0.5)" strokeWidth={1.5} strokeDasharray="5 3" />
+          {/* Current position */}
+          {fleetTime > 0 && (
+            <>
+              <line x1={xs(ft)} y1={0} x2={xs(ft)} y2={IH}
+                stroke="rgba(255,255,255,0.28)" strokeWidth={1} strokeDasharray="3 3" />
+              <circle cx={xs(ft)} cy={ys(curGap)} r={5}
+                fill={ft <= ADV_P1_DUR ? "#ff7043" : "#ff1744"} stroke="white" strokeWidth={1.5} />
+            </>
+          )}
+          {isDone && (
+            <circle cx={xs(10)} cy={ys(0)} r={7} fill="#ffd740" stroke="white" strokeWidth={2} />
+          )}
+        </g>
+        {/* Axes */}
+        <line x1={0} y1={IH} x2={IW} y2={IH} stroke="rgba(255,255,255,0.5)" strokeWidth={1.5} />
+        <line x1={0} y1={0} x2={0} y2={IH} stroke="rgba(255,255,255,0.5)" strokeWidth={1.5} />
+        {/* X ticks */}
+        {[0,2,4,6,8,10].map(t =>
+          <g key={t} transform={`translate(${xs(t)},${IH})`}>
+            <line y2={4} stroke="rgba(255,255,255,0.5)" />
+            <text y={15} textAnchor="middle"
+              fill={t === 5 ? "#ffd740" : "rgba(255,255,255,0.55)"}
+              fontWeight={t === 5 ? 700 : 400} fontSize={10}>{t}</text>
+          </g>
+        )}
+        <text x={IW/2} y={IH+34} textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize={11}>
+          追击时间（分钟）
+        </text>
+        {/* Y ticks */}
+        {[50,100,150,200].map(d =>
+          <g key={d} transform={`translate(0,${ys(d)})`}>
+            <line x1={-4} stroke="rgba(255,255,255,0.5)" />
+            <text x={-7} textAnchor="end" dominantBaseline="middle"
+              fill="rgba(255,255,255,0.55)" fontSize={10}>{d}</text>
+          </g>
+        )}
+        <text transform={`translate(${-ML+13},${IH/2}) rotate(-90)`}
+          textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize={11}>差距（km）</text>
+        {/* Phase labels above chart */}
+        <text x={xs(2.5)} y={-17} textAnchor="middle" fill="#ff7043" fontSize={9} fontWeight={700}>第一阶段</text>
+        <text x={xs(2.5)} y={-7}  textAnchor="middle" fill="rgba(255,112,67,0.7)" fontSize={8}>每分钟缩小 10 km（慢）</text>
+        <text x={xs(7.5)} y={-17} textAnchor="middle" fill="#ff1744" fontSize={9} fontWeight={700}>第二阶段</text>
+        <text x={xs(7.5)} y={-7}  textAnchor="middle" fill="rgba(255,23,68,0.7)" fontSize={8}>每分钟缩小 30 km（快）</text>
+        {/* Speed-change label on x-axis */}
+        <g transform={`translate(${xs(5)},${IH+4})`}>
+          <rect x={-18} y={0} width={36} height={14} rx={2} fill="rgba(255,215,64,0.18)" />
+          <text textAnchor="middle" y={11} fill="#ffd740" fontSize={9} fontWeight={700}>加速！</text>
+        </g>
+        {/* Legend */}
+        <g transform={`translate(${IW-124},10)`}>
+          <rect width={124} height={50} rx={4} fill="rgba(0,0,0,0.55)" />
+          <line x1={8} y1={13} x2={22} y2={13} stroke="#ff7043" strokeWidth={2.5} />
+          <text x={27} y={17} fill="rgba(255,255,255,0.85)" fontSize={9}>第一阶段（坡度缓）</text>
+          <line x1={8} y1={37} x2={22} y2={37} stroke="#ff1744" strokeWidth={2.5} />
+          <text x={27} y={41} fill="rgba(255,255,255,0.85)" fontSize={9}>第二阶段（坡度陡）</text>
+        </g>
+      </g>
+    </svg>
+  );
+}
+
+// ─── AdvancedCosmicChaseApp ───────────────────────────────────────────────────
+
+function AdvancedCosmicChaseApp() {
+  const [phase, setPhase] = useState<Phase>("idle");
+  const [simTime, setSimTime] = useState(0);
+  const rafRef = useRef<number>(0);
+  const startRealRef = useRef<number>(0);
+  const runningRef = useRef<boolean>(false);
+
+  const fleetTime = Math.max(0, simTime - ADV_HS);
+  const humanFrac = Math.min((ADV_HUMAN * simTime) / ADV_TRACK_MAX, 1);
+  const fleetFrac = Math.min(advFleetPos(simTime) / ADV_TRACK_MAX, 1);
+  const gap       = Math.round(advGap(simTime));
+
+  const isPreChase = fleetTime <= 0;
+  const isPhase2   = fleetTime > ADV_P1_DUR;
+  const p1Progress = Math.min(1, fleetTime / ADV_P1_DUR);
+  const p2Progress = isPhase2 ? Math.min(1, (fleetTime - ADV_P1_DUR) / ADV_P2_DUR) : 0;
+
+  const animate = useCallback((ts: number) => {
+    if (!runningRef.current) return;
+    if (startRealRef.current === 0) startRealRef.current = ts;
+    const next = ((ts - startRealRef.current) / 1000) * (ADV_TOT_TIME / ANIM_REAL_SECS);
+    if (next >= ADV_TOT_TIME) {
+      setSimTime(ADV_TOT_TIME); setPhase("done"); runningRef.current = false; return;
+    }
+    setSimTime(next);
+    rafRef.current = requestAnimationFrame(animate);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
+
+  const doStart = () => {
+    cancelAnimationFrame(rafRef.current);
+    startRealRef.current = 0; runningRef.current = true;
+    setSimTime(0); setPhase("running");
+    rafRef.current = requestAnimationFrame(animate);
+  };
+  const doReset = () => {
+    cancelAnimationFrame(rafRef.current); runningRef.current = false;
+    setSimTime(0); setPhase("idle");
+  };
+
+  const stageLabel = isPreChase ? "🚀 逃逸中" : isPhase2 ? "⚡ 极速追击" : "🛸 慢速追击";
+  const stageCls   = isPreChase ? "stage-pre"  : isPhase2 ? "stage-p2"    : "stage-p1";
+
+  return (
+    <div className="app">
+      <header className="app-header">
+        <div className="header-text">
+          <h1>🛸 宇宙追及实验室</h1>
+          <p>变速追击：规则变了，怎么拆？</p>
+        </div>
+        <div className="header-badge adv-badge">进阶·变速追击</div>
+      </header>
+
+      {/* Scenario card */}
+      <div className="scenario-card">
+        <div className="scenario-title">📖 情报</div>
+        <div className="scenario-grid">
+          <div className="scenario-item">
+            <span className="sc-icon">🚀</span>
+            <span>人类飞船以 <strong className="val-cyan">40 km/min</strong> 先出发</span>
+          </div>
+          <div className="scenario-item">
+            <span className="sc-icon">⏱</span>
+            <span><strong>5 分钟后</strong>三体舰队出发，此时相距 <strong className="val-gold">200 km</strong></span>
+          </div>
+          <div className="scenario-item">
+            <span className="sc-icon">🛸</span>
+            <span>追击前 5 分钟速度 <strong className="val-p1">50 km/min</strong></span>
+          </div>
+          <div className="scenario-item">
+            <span className="sc-icon">⚡</span>
+            <span>5 分钟后加速到 <strong className="val-p2">70 km/min</strong></span>
+          </div>
+        </div>
+      </div>
+
+      {/* Controls */}
+      <div className="action-bar">
+        <button
+          className={`btn btn-start${phase === "running" ? " btn-stop" : ""}`}
+          onClick={phase === "running" ? doReset : doStart}
+        >
+          {phase === "running" ? "⏹ 停止" : "▶ 开始模拟"}
+        </button>
+        <button className="btn btn-reset" onClick={doReset}>↺ 重置</button>
+        {phase !== "idle" && <span className={`stage-badge ${stageCls}`}>{stageLabel}</span>}
+      </div>
+
+      {/* Animation canvas */}
+      <section className="demo-section">
+        <div className="demo-canvas">
+          <StarField />
+          <div className="track-rail">
+            {gap > 0 && fleetTime > 0 && (
+              <div className="gap-bar"
+                style={{ left: `${fleetFrac * 100}%`, width: `${(humanFrac - fleetFrac) * 100}%` }}>
+                <span className="gap-label">{gap} km</span>
+              </div>
+            )}
+            {fleetTime > 0 && (
+              <div className={`ship ship-tri${isPhase2 ? " ship-turbo" : ""}`}
+                style={{ left: `${fleetFrac * 100}%` }}>
+                <span className="ship-emoji">🛸</span>
+                <span className={`ship-tag ${isPhase2 ? "tag-tri-turbo" : "tag-tri"}`}>
+                  {isPhase2 ? "⚡三体" : "三体"}
+                </span>
+              </div>
+            )}
+            <div className="ship ship-human" style={{ left: `${humanFrac * 100}%` }}>
+              <span className="ship-emoji">🚀</span>
+              <span className="ship-tag tag-human">人类</span>
+            </div>
+          </div>
+          {phase === "done" && (
+            <div className="catch-flash">🎉 追击第 {ADV_FLEET_TOT} 分钟追上，距出发点 600 km 处！</div>
+          )}
+        </div>
+        <div className="stats-row">
+          <div className="stat-card">
+            <span className="stat-name">总时间</span>
+            <span className="stat-val">{simTime.toFixed(1)}<small>分钟</small></span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-name">追击时间</span>
+            <span className="stat-val" style={{ color: fleetTime > 0 ? "var(--orange)" : undefined }}>
+              {fleetTime.toFixed(1)}<small>分钟</small>
+            </span>
+          </div>
+          <div className="stat-card stat-rem">
+            <span className="stat-name">当前差距</span>
+            <span className="stat-val">{gap}<small>km</small></span>
+          </div>
+        </div>
+      </section>
+
+      {/* Two-phase analysis */}
+      <section className="adv-analysis">
+        <div className="adv-analysis-title">分两步算</div>
+        <div className="phase-layout">
+
+          {/* Phase 1 box */}
+          <div className={`phase-box${fleetTime > 0 ? " pb-active" : ""}${fleetTime >= ADV_P1_DUR ? " pb-done" : ""}`}>
+            <div className="pb-header pb-h1">
+              <span className="pb-num">① 第一阶段</span>
+              <span className="pb-range">追击 0 ~ 5 分钟</span>
+              <span className="pb-spd val-p1">50 km/min</span>
+            </div>
+            <div className="pb-calcs">
+              <div className="pc-row">
+                <span className="pc-lbl">初始差距</span>
+                <span className="pc-val">40 × 5 = <b>200 km</b></span>
+              </div>
+              <div className="pc-row">
+                <span className="pc-lbl">每分钟追近</span>
+                <span className="pc-val val-p1">50 − 40 = <b>10 km</b></span>
+              </div>
+              <div className="pc-row">
+                <span className="pc-lbl">5 分钟追近</span>
+                <span className="pc-val val-p1">10 × 5 = <b>50 km</b></span>
+              </div>
+              <div className="pc-divider" />
+              <div className="pc-row pc-result">
+                <span className="pc-lbl">剩余差距</span>
+                <span className="pc-val val-gold">200 − 50 = <b>150 km</b></span>
+              </div>
+            </div>
+            <div className="pb-bar">
+              <div className="pb-fill pb-fill-p1" style={{ width: `${p1Progress * 100}%` }} />
+            </div>
+          </div>
+
+          {/* Bridge */}
+          <div className="phase-bridge">
+            <div className="bridge-arr">›</div>
+            <div className="bridge-txt">
+              <div className="bridge-main">差距 150 km</div>
+              <div className="bridge-sub">接力给第二阶段</div>
+            </div>
+            <div className="bridge-arr">›</div>
+          </div>
+
+          {/* Phase 2 box */}
+          <div className={`phase-box${fleetTime >= ADV_P1_DUR ? " pb-active" : ""}${phase === "done" ? " pb-done" : ""}`}>
+            <div className="pb-header pb-h2">
+              <span className="pb-num">② 第二阶段</span>
+              <span className="pb-range">追击 5 ~ 10 分钟</span>
+              <span className="pb-spd val-p2">70 km/min</span>
+            </div>
+            <div className="pb-calcs">
+              <div className="pc-row">
+                <span className="pc-lbl">接收差距</span>
+                <span className="pc-val val-gold"><b>150 km</b></span>
+              </div>
+              <div className="pc-row">
+                <span className="pc-lbl">每分钟追近</span>
+                <span className="pc-val val-p2">70 − 40 = <b>30 km</b></span>
+              </div>
+              <div className="pc-divider" />
+              <div className="pc-row pc-result">
+                <span className="pc-lbl">追及时间</span>
+                <span className="pc-val val-gold">150 ÷ 30 = <b>5 分钟</b></span>
+              </div>
+            </div>
+            <div className="pb-bar">
+              <div className="pb-fill pb-fill-p2" style={{ width: `${p2Progress * 100}%` }} />
+            </div>
+          </div>
+        </div>
+
+        {/* Result */}
+        <div className={`adv-result${phase === "done" ? " adv-result-show" : ""}`}>
+          <div className="adv-result-eq">
+            总追赶时间 = 5 + 5 = <span className="val-gold">10 分钟</span>
+          </div>
+          <div className="adv-result-note">
+            追上地点：40 × 15 = <span className="val-gold">600 km</span> 处
+          </div>
+        </div>
+
+        {/* Chart */}
+        <div className="chart-panel" style={{ marginTop: 14 }}>
+          <h3 className="panel-title">
+            差距变化图
+            <small className="panel-hint">两段直线坡度不同，说明"规则变了"</small>
+          </h3>
+          <AdvChart fleetTime={fleetTime} isDone={phase === "done"} />
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// ─── Root ─────────────────────────────────────────────────────────────────────
+
+function App() {
+  const [mode, setMode] = useState<"basic" | "advanced">("basic");
+  return (
+    <>
+      <div className="mode-tabs">
+        <button
+          className={`mode-tab${mode === "basic" ? " mode-tab-active" : ""}`}
+          onClick={() => setMode("basic")}
+        >基础版</button>
+        <button
+          className={`mode-tab${mode === "advanced" ? " mode-tab-active" : ""}`}
+          onClick={() => setMode("advanced")}
+        >进阶版</button>
+      </div>
+      {mode === "basic" ? <CosmicChaseApp /> : <AdvancedCosmicChaseApp />}
+    </>
+  );
+}
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <CosmicChaseApp />
+    <App />
   </React.StrictMode>
 );
