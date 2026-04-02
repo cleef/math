@@ -1,0 +1,9 @@
+{
+  "id": "meet-again-lab",
+  "name": "折返相遇实验",
+  "version": "1.0.0",
+  "description": "通过双向折返动画理解第二次相遇问题，掌握「合计路程法」和位置—时间图像。",
+  "icon": "🔄",
+  "entry": "index.html",
+  "owner": "Light Maths Team"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "折返相遇实验",
+  "description": "Interactive second-meeting simulation with bouncing walkers, position-time graph, and math derivation.",
+  "requestFramePermissions": []
+}
