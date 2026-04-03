@@ -150,6 +150,31 @@
     }
   },
   {
+    "id": "meet-again-lab",
+    "name": "折返相遇实验",
+    "icon": "🔄",
+    "description": "通过双向折返动画理解第二次相遇问题，掌握「合计路程法」和位置—时间图像。",
+    "longDescription": "围绕「两人在两端同时出发，多次折返后第二次相遇在何处」设计。学生可调节速度与出发时刻，实时观察折返轨迹、路程累计表和位置—时间图像三者联动。",
+    "usage": "## 使用方式\n- 调整两人速度与出发时间\n- 点击\"开始\"观察折返相遇过程\n- 对照表格与图像，总结第二次相遇时合计路程与全程的关系\n\n## 教学建议\n- 先让学生预测第二次相遇点的位置\n- 用动画验证，引导发现「合计路程 = 3 倍全程」规律\n- 最后让学生用该规律推算具体位置",
+    "owner": "Light Maths Team",
+    "lastUpdated": "2026-04-03",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": ["路程"],
+    "permissions": ["light.app.meet.again.lab"],
+    "entryPath": "/apps/meet-again-lab/",
+    "i18n": {
+      "en-US": {
+        "name": "Meet Again Lab",
+        "description": "Use two-way bounce animations to understand the second-meeting problem and the total-distance method.",
+        "longDescription": "Centered on the classic problem: two people start from opposite ends and bounce back; where do they meet the second time? Students adjust speeds and start times, then watch the bounce paths, cumulative distance table, and position–time graph update together.",
+        "usage": "## How to use\n- Adjust both speeds and start times\n- Click \"Start\" to watch the bouncing-meeting process\n- Compare the table and graph to find the relationship between total distance at the second meeting and the full route length\n\n## Teaching tips\n- Ask students to predict the second meeting point first\n- Use the animation to verify and guide discovery of the rule: total distance = 3× the full route\n- Have students use the rule to calculate the exact position",
+        "tags": ["Distance"]
+      }
+    }
+  },
+  {
     "id": "bias-variance-range",
     "name": "偏差与方差打靶实验",
     "icon": "🎯",
