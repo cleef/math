@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, Pause, RotateCcw, ArrowRight } from "lucide-react";
+import { PixelDogSprite } from "./components/PixelDogSprite";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const SPEED_M_PER_MIN = 10000 / 60; // 10 km/h in m/min ≈ 166.67
@@ -42,13 +43,13 @@ function followWaypoints(dist: number, pts: [number, number][]) {
 
 // ── Scenario positions ────────────────────────────────────────────────────────
 const VW = 224, VH = 152, CX = 112, CY = 76;
+const LINEAR_X0 = 20;
+const LINEAR_MIN_LEN = 184;
+const LINEAR_TICK = 56;
+const LINEAR_END_PAD = 20;
 
 function getPos(type: string, dist: number) {
   switch (type) {
-    case "linear": {
-      const L = 172, x0 = (VW - L) / 2;
-      return { x: x0 + fold(dist, L), y: CY, angle: (dist % (L * 2)) <= L ? 0 : Math.PI };
-    }
     case "shuttle": {
       const L = 68, x0 = CX - L / 2;
       return { x: x0 + fold(dist, L), y: CY, angle: (dist % (L * 2)) <= L ? 0 : Math.PI };
@@ -74,20 +75,46 @@ function getPos(type: string, dist: number) {
 function ScenarioPanel({ type, label, sublabel, dist, distM }: {
   type: string; label: string; sublabel: string; dist: number; distM: number;
 }) {
-  const { x, y, angle } = getPos(type, dist);
-  const deg = (angle * 180) / Math.PI;
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const { x: baseX, y: baseY, angle } = getPos(type, dist);
+  const linearEnd = Math.max(LINEAR_X0 + LINEAR_MIN_LEN, LINEAR_X0 + dist + 36);
+  const linearSvgW = Math.max(VW, linearEnd + LINEAR_END_PAD);
+  const x = type === "linear" ? LINEAR_X0 + dist : baseX;
+  const y = type === "linear" ? CY : baseY;
+  const facingLeft = type === "linear" ? false : Math.cos(angle) < 0;
+
+  useEffect(() => {
+    if (type !== "linear" || !scrollRef.current) return;
+    const viewport = scrollRef.current;
+    const maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+    const targetLeft = Math.max(0, Math.min(maxScroll, x - viewport.clientWidth * 0.45));
+    viewport.scrollLeft = targetLeft;
+  }, [type, x, linearSvgW]);
 
   // Path background
   let track: React.ReactNode = null;
   let deco: React.ReactNode = null;
 
   if (type === "linear") {
-    const L = 172, x0 = (VW - L) / 2;
-    track = <line x1={x0} y1={CY} x2={x0 + L} y2={CY} stroke="#E5E7EB" strokeWidth="8" strokeLinecap="round" />;
+    track = (
+      <line
+        x1={LINEAR_X0}
+        y1={CY}
+        x2={linearEnd}
+        y2={CY}
+        stroke="#E5E7EB"
+        strokeWidth="8"
+        strokeLinecap="round"
+      />
+    );
     deco = (
       <>
-        <circle cx={x0} cy={CY} r="6" fill="#D1D5DB" />
-        <circle cx={x0 + L} cy={CY} r="6" fill="#D1D5DB" />
+        <circle cx={LINEAR_X0} cy={CY} r="6" fill="#D1D5DB" />
+        {Array.from({ length: Math.max(0, Math.floor((linearEnd - LINEAR_X0) / LINEAR_TICK) - 1) }).map((_, i) => {
+          const tickX = LINEAR_X0 + (i + 1) * LINEAR_TICK;
+          return <circle key={tickX} cx={tickX} cy={CY} r="2.5" fill="rgba(209,213,219,0.95)" />;
+        })}
+        <circle cx={linearEnd} cy={CY} r="6" fill="#D1D5DB" />
       </>
     );
   } else if (type === "shuttle") {
@@ -114,19 +141,17 @@ function ScenarioPanel({ type, label, sublabel, dist, distM }: {
         <span className="sc-panel__label">{label}</span>
         <span className="sc-panel__sub">{sublabel}</span>
       </div>
-      <svg viewBox={`0 0 ${VW} ${VH}`} className="sc-svg">
-        {deco}
-        {track}
-        {/* character */}
-        <g transform={`translate(${x.toFixed(1)},${y.toFixed(1)})`}>
-          <circle r="15" fill="#F97316" />
-          <text textAnchor="middle" dominantBaseline="middle" fontSize="13"
-            fill="white" fontWeight="700">浪</text>
-          <g transform={`rotate(${deg.toFixed(1)})`}>
-            <polygon points="18,0 25,4 25,-4" fill="rgba(249,115,22,0.65)" />
-          </g>
-        </g>
-      </svg>
+      <div ref={scrollRef} className={`sc-svg-shell ${type === "linear" ? "sc-svg-shell--scroll" : ""}`}>
+        <svg
+          viewBox={`0 0 ${type === "linear" ? linearSvgW : VW} ${VH}`}
+          className="sc-svg"
+          style={type === "linear" ? { width: `${linearSvgW}px`, minWidth: `${linearSvgW}px` } : undefined}
+        >
+          {deco}
+          {track}
+          <PixelDogSprite x={x} y={y} size={18} facingLeft={facingLeft} />
+        </svg>
+      </div>
       <div className="sc-panel__dist">
         路程 <strong>{distM.toFixed(0)}</strong> m
       </div>
@@ -175,7 +200,7 @@ export function IntroPage({ onEnter }: { onEnter: () => void }) {
   }
 
   const SCENARIOS = [
-    { type: "linear",  label: "跑走势",  sublabel: "长直道折返" },
+    { type: "linear",  label: "跑直线",  sublabel: "一直向前" },
     { type: "shuttle", label: "往返跑",  sublabel: "短程多次折返" },
     { type: "oval",    label: "跑道绕圈", sublabel: "椭圆跑道" },
     { type: "street",  label: "马路街道", sublabel: "转弯绕路" },
@@ -189,7 +214,7 @@ export function IntroPage({ onEnter }: { onEnter: () => void }) {
         <p className="eyebrow">Light Math · 行程问题 前置理解</p>
         <h1>路程 = 速度 × 时间</h1>
         <p className="intro-subtitle">
-          小浪以 <strong>10 km/h</strong> 奔跑，不管跑什么路线、方向怎么变
+          小狗以 <strong>10 km/h</strong> 奔跑，不管跑什么路线、方向怎么变
           <br />路程始终都是 <strong>速度 × 时间</strong>
         </p>
       </header>

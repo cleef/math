@@ -14,6 +14,8 @@ const MEET_1_POS = 320;
 const MEET_2_T = 12;
 const MEET_2_POS = 240;
 const MIN_PER_ANIM_SEC = 0.5;
+const XQ_POS_PHASE4 = TRACK - XQ_SPEED * (XM_TURN_T - XQ_TURN_T); // 3600/7 ≈ 514.3
+const COMB_SPEED = XQ_SPEED + XM_SPEED; // 150
 
 function clamp(v: number, lo: number, hi: number) {
   return Math.max(lo, Math.min(hi, v));
@@ -251,39 +253,194 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── 方法二：分段追踪（关键时刻 + 推导合并） ──────────────────────── */}
-      <section className="card">
-        <h2 className="card-title">方法二：分段追踪</h2>
-        <div className="segmented-layout">
-          <div>
-            <div className="method__label" style={{ marginBottom: 12 }}>关键时刻</div>
-            <ul className="milestones">
-              {MILESTONES.map((m) => (
-                <li key={m.t} className={`milestone milestone--${m.kind} ${time >= m.t ? "reached" : ""}`}>
-                  <div className="milestone__pip" />
-                  <div className="milestone__body">
-                    <div className="milestone__name">{m.label}</div>
-                    <div className="milestone__detail">{m.detail}</div>
-                  </div>
-                  {time >= m.t && <span className="milestone__check">✓</span>}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <div className="method__label" style={{ marginBottom: 12 }}>推导步骤</div>
-            <div className="steps">
-              <div className="step">t=4 首次相遇 @ 320 m</div>
-              <div className="step">t=7.5 小强抵达 600 m，折返向左</div>
-              <div className="step">t=60/7 小明抵达 0 m，折返向右</div>
-              <div className="step">此刻小强在 3600/7 m，两人相距 3600/7 m，反向合速 150</div>
-              <div className="step">再走 (3600/7) ÷ 150 = 24/7 分钟</div>
-              <div className="step step--result">60/7 + 24/7 = <strong>84/7 = 12 分钟</strong></div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── 方法二：分段追踪 ─────────────────────────────────────────────────── */}
+      <SegmentedSolutionPanel />
     </main>
+  );
+}
+
+// ── 分段解法面板 ──────────────────────────────────────────────────────────────
+const PHASES = [
+  { num: 1, startT: 0,         endT: MEET_1_T,  title: "相向而行，首次相遇",    color: "var(--meet)" },
+  { num: 2, startT: MEET_1_T,  endT: XQ_TURN_T, title: "继续前行，小强到达右端", color: "var(--xq)"  },
+  { num: 3, startT: XQ_TURN_T, endT: XM_TURN_T, title: "小强折返，小明到达左端", color: "var(--xm)"  },
+  { num: 4, startT: XM_TURN_T, endT: MEET_2_T,  title: "双向折返，再次相遇",    color: "var(--meet)" },
+];
+
+function miniTrack(t: number, phaseNum: number) {
+  const toX = (p: number) => 10 + (p / TRACK) * 280;
+  const { xq, xm } = getPositions(t);
+  const { xqRight, xmRight } = getDir(t);
+  const xqX = toX(xq), xmX = toX(xm);
+  const xq600X = toX(600); // = 290
+  const showGap = phaseNum === 4 && xqX > xmX + 18;
+  const returnDist = t > XQ_TURN_T ? 600 - xq : 0;
+  const showReturn = returnDist > 2;
+  return (
+    <svg viewBox="0 0 300 56" className="phase-mini-track" aria-hidden="true">
+      {/* Track rail */}
+      <rect x="10" y="26" width="280" height="6" rx="3" fill="rgba(0,0,0,0.08)" />
+      {/* Return distance segment (小强折返后走的路) */}
+      {showReturn && (
+        <rect x={xqX} y="26" width={xq600X - xqX} height="6" rx="1" fill="rgba(249,115,22,0.45)" />
+      )}
+      {/* End labels */}
+      <text x="10" y="54" fontSize="9" fill="rgba(0,0,0,0.35)" textAnchor="middle">0</text>
+      <text x="290" y="54" fontSize="9" fill="rgba(0,0,0,0.35)" textAnchor="middle">600</text>
+      {/* Return distance label below track */}
+      {showReturn && xq600X - xqX > 16 && (
+        <text x={(xqX + xq600X) / 2} y="44" fontSize="8" fill="#EA580C" textAnchor="middle" fontWeight="700">
+          {returnDist.toFixed(0)} m
+        </text>
+      )}
+      {/* Gap bracket for phase 4 */}
+      {showGap && (
+        <g>
+          <line x1={xmX + 6} y1="10" x2={xqX - 6} y2="10" stroke="#F59E0B" strokeWidth="1.5" />
+          <polygon points={`${xmX},10 ${xmX + 7},7 ${xmX + 7},13`} fill="#F59E0B" />
+          <polygon points={`${xqX},10 ${xqX - 7},7 ${xqX - 7},13`} fill="#F59E0B" />
+          <text x={(xmX + xqX) / 2} y="8" fontSize="8" fill="#D97706" textAnchor="middle" fontWeight="700">
+            {(xq - xm).toFixed(0)} m
+          </text>
+        </g>
+      )}
+      {/* XQ walker */}
+      <circle cx={xqX} cy="29" r="7" fill="#F97316" stroke="white" strokeWidth="1.5" />
+      <text x={xqX} y="29" fontSize="7" fill="white" textAnchor="middle" dominantBaseline="middle">强</text>
+      <polygon fill="#F97316" points={xqRight
+        ? `${xqX + 9},27 ${xqX + 9},31 ${xqX + 14},29`
+        : `${xqX - 9},27 ${xqX - 9},31 ${xqX - 14},29`} />
+      {/* XM walker */}
+      <circle cx={xmX} cy="29" r="7" fill="#0EA5E9" stroke="white" strokeWidth="1.5" />
+      <text x={xmX} y="29" fontSize="7" fill="white" textAnchor="middle" dominantBaseline="middle">明</text>
+      <polygon fill="#0EA5E9" points={xmRight
+        ? `${xmX + 9},27 ${xmX + 9},31 ${xmX + 14},29`
+        : `${xmX - 9},27 ${xmX - 9},31 ${xmX - 14},29`} />
+    </svg>
+  );
+}
+
+function SegmentedSolutionPanel() {
+  const [time, setTime] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const rafRef2 = useRef<number | null>(null);
+  const lastTsRef2 = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!playing) { lastTsRef2.current = null; return; }
+    const animate = (ts: number) => {
+      if (lastTsRef2.current === null) lastTsRef2.current = ts;
+      const dt = (ts - lastTsRef2.current) / 1000;
+      lastTsRef2.current = ts;
+      let shouldStop = false;
+      setTime((prev) => {
+        const next = prev + dt * MIN_PER_ANIM_SEC;
+        if (next >= TOTAL_T) { shouldStop = true; return TOTAL_T; }
+        return next;
+      });
+      if (shouldStop) { setPlaying(false); lastTsRef2.current = null; return; }
+      rafRef2.current = requestAnimationFrame(animate);
+    };
+    rafRef2.current = requestAnimationFrame(animate);
+    return () => { if (rafRef2.current !== null) cancelAnimationFrame(rafRef2.current); };
+  }, [playing]);
+
+  function handlePlay() {
+    if (time >= TOTAL_T) setTime(0);
+    setPlaying(true);
+  }
+  function handleReset() {
+    setPlaying(false); setTime(0);
+    lastTsRef2.current = null;
+  }
+
+  return (
+    <section className="card">
+      <h2 className="card-title">方法二：分段追踪</h2>
+      <div className="controls" style={{ marginBottom: 12 }}>
+        <button className="btn btn--play" onClick={handlePlay} disabled={playing}
+          style={{ padding: "5px 14px", fontSize: 13 }}>
+          <Play size={13} /> 播放
+        </button>
+        <button className="btn btn--pause" onClick={() => setPlaying(false)} disabled={!playing}
+          style={{ padding: "5px 14px", fontSize: 13 }}>
+          <Pause size={13} /> 暂停
+        </button>
+        <button className="btn btn--reset" onClick={handleReset}
+          style={{ padding: "5px 14px", fontSize: 13 }}>
+          <RotateCcw size={12} /> 重置
+        </button>
+      </div>
+      <div className="phase-list">
+        {PHASES.map((p) => {
+          const status = time >= p.endT ? "completed" : time >= p.startT ? "active" : "pending";
+          const snapT = status === "completed" ? p.endT : p.startT;
+          const live = status === "active";
+          const trackT = live ? time : snapT;
+          const { xq: lxq, xm: lxm } = getPositions(trackT);
+          const liveGap = lxq - lxm;
+          const liveLeft = liveGap > 0 ? liveGap / COMB_SPEED : 0;
+          return (
+            <div
+              key={p.num}
+              className={`phase-card phase-card--${status}`}
+              style={status !== "pending" ? { borderLeftColor: p.color } : undefined}
+            >
+              <div className="phase-card__header">
+                <span className="phase-badge" style={status !== "pending" ? { background: p.color } : undefined}>
+                  {["①", "②", "③", "④"][p.num - 1]}
+                </span>
+                <span className="phase-card__title">{p.title}</span>
+                {status === "active" && <span className="phase-status phase-status--active">进行中</span>}
+                {status === "completed" && <span className="phase-status phase-status--done">✓</span>}
+              </div>
+              {miniTrack(trackT, p.num)}
+              {p.num === 1 && status !== "pending" && (
+                <div className="phase-fact">t = {MEET_1_T} 分钟 · 位置 <strong>{MEET_1_POS} m</strong></div>
+              )}
+              {p.num === 2 && status !== "pending" && (
+                <div className="phase-fact">t = {XQ_TURN_T} 分钟 · 小强到达 <strong>600 m</strong>，折返向左</div>
+              )}
+              {p.num === 3 && status !== "pending" && (
+                <div className="phase-fact">t = 60/7 ≈ {XM_TURN_T.toFixed(2)} 分钟 · 小明到达 <strong>0 m</strong>，折返向右</div>
+              )}
+              {p.num === 4 && status !== "pending" && (
+                <div>
+                  <div className="phase4-gap-box">
+                    <span className="xq-text">小强 {XQ_POS_PHASE4.toFixed(1)} m ←</span>
+                    <span className="phase4-gap-center">间距 3600/7 m</span>
+                    <span className="xm-text">→ 0 m 小明</span>
+                  </div>
+                  <div className="phase4-gap-derive">
+                    <div className="phase4-derive-steps">
+                      <div>时间差 = 600/70 − 600/80 = <strong>15/14 分钟</strong>（小明比小强晚到）</div>
+                      <div>小强已折返走了 15/14 × 80 = <strong>600/7 m</strong></div>
+                      <div>小强位置 = 600 − 600/7 = <strong>3600/7 m</strong>（小明在 0 m，故间距 = 3600/7）</div>
+                    </div>
+                  </div>
+                  {live && time < MEET_2_T && (
+                    <div className="phase4-live-gap">
+                      当前间距 <strong>{liveGap.toFixed(1)}</strong> m
+                      &nbsp;·&nbsp; 合速 150 m/min
+                      &nbsp;·&nbsp; 还需 <strong>{liveLeft.toFixed(2)}</strong> 分钟
+                    </div>
+                  )}
+                  <div className="steps" style={{ marginTop: 8 }}>
+                    <div className="step">3600/7 ÷ 150 = <strong>24/7 分钟</strong>（剩余时间）</div>
+                    <div className="step">60/7 + 24/7 = 84/7 = <strong>12 分钟</strong></div>
+                    {status === "completed" && (
+                      <div className="step step--result">
+                        小明从 0 m 走 70 × (24/7) = <strong>240 m</strong> ✓
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 

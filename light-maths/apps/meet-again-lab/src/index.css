@@ -665,6 +665,139 @@ body {
   .segmented-layout { grid-template-columns: 1fr; }
 }
 
+/* ── Segmented solution v2 (phase cards) ─────────────────────────────────── */
+.phase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.phase-card {
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line);
+  padding: 12px 14px;
+  transition: opacity 0.3s, border-color 0.3s, background 0.3s;
+}
+
+.phase-card--pending { opacity: 0.4; }
+
+.phase-card--active {
+  background: rgba(0, 0, 0, 0.015);
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.12);
+}
+
+.phase-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.phase-badge {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.15);
+  color: white;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+.phase-card__title {
+  font-size: 13px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.phase-status {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+.phase-status--active {
+  background: rgba(245, 158, 11, 0.15);
+  color: #92400E;
+}
+
+.phase-status--done {
+  background: rgba(34, 197, 94, 0.12);
+  color: #166534;
+}
+
+.phase-mini-track {
+  width: 100%;
+  height: 56px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.phase-fact {
+  font-size: 12px;
+  color: var(--ink-soft);
+  padding: 4px 6px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.phase4-gap-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1.5px solid rgba(245, 158, 11, 0.3);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.phase4-gap-center {
+  font-size: 12px;
+  color: #D97706;
+  font-weight: 700;
+  font-family: "JetBrains Mono", monospace;
+  white-space: nowrap;
+}
+
+.phase4-gap-derive {
+  margin-bottom: 8px;
+}
+
+.phase4-derive-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.phase4-derive-steps div {
+  font-size: 12px;
+  padding: 5px 8px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 5px;
+  border-left: 2px solid rgba(249, 115, 22, 0.35);
+  line-height: 1.5;
+}
+
+.phase4-live-gap {
+  font-size: 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
 /* ── Distance Model (路程模型) ──────────────────────────────────────────── */
 .dm-layout {
   display: grid;
@@ -919,6 +1052,30 @@ body {
   width: 100%;
   height: auto;
   display: block;
+}
+
+.sc-svg-shell {
+  overflow: hidden;
+}
+
+.sc-svg-shell--scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(28,25,23,0.22) transparent;
+}
+
+.sc-svg-shell--scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.sc-svg-shell--scroll::-webkit-scrollbar-thumb {
+  background: rgba(28,25,23,0.18);
+  border-radius: 999px;
+}
+
+.sc-svg-shell--scroll::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .sc-panel__dist {
