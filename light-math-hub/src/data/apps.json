@@ -1,5 +1,30 @@
 [
   {
+    "id": "allocation-expression-lab",
+    "name": "分配问题表达实验",
+    "icon": "🧩",
+    "description": "先看具体分配过程，再抽象成含未知数的正确表达式和方程。",
+    "longDescription": "围绕“空闲、剩余、少用、补加”这些最容易写反的语义设计。学生先观察房间分配或苹果装袋的动画，再判断调整量应写在总量上还是组数上。",
+    "usage": "## 使用方式\n- 先选择内置场景，或点击“AI 生成新场景”\n- 点击【开始】观看两种分配过程，可随时暂停或重置\n- 再到下方判断表达式里该用加号还是减号\n- 最后拖动试代滑杆，检查两个表达式什么时候表示同一个总量\n\n## 教学建议\n- 先停在动画中间，让学生口头描述“多了什么、少了什么”\n- 再让学生只判断符号方向，不急着解方程\n- 最后再总结“调整总量”和“调整组数”的区别",
+    "owner": "Light Maths Team",
+    "lastUpdated": "2026-04-04",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": ["代数"],
+    "permissions": ["light.app.allocation.expression.lab"],
+    "entryPath": "/apps/allocation-expression-lab/",
+    "i18n": {
+      "en-US": {
+        "name": "Allocation Expression Lab",
+        "description": "Watch a concrete distribution process first, then translate it into correct algebraic expressions and equations.",
+        "longDescription": "Built around the sign-direction mistakes students often make in allocation word problems. Learners first observe animated room or bagging scenarios, then decide whether an adjustment belongs in the total amount or the group count.",
+        "usage": "## How to use\n- Pick a built-in scenario or click \"Generate with AI\"\n- Click Start to watch both distribution methods, with pause and reset available anytime\n- Decide whether each expression should use plus or minus\n- Drag the trial slider to see when both expressions represent the same total\n\n## Teaching tips\n- Pause mid-animation and ask students what increased or decreased\n- Let them focus on sign direction before solving the equation\n- Summarize the difference between adjusting the total and adjusting the number of groups",
+        "tags": ["Algebra"]
+      }
+    }
+  },
+  {
     "id": "cube-surface-lab",
     "name": "立方体表面积实验室",
     "icon": "🧊",

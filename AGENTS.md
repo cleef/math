@@ -36,6 +36,7 @@ Default local ports:
 ## 4) High-Value Paths
 
 - Root overview: `README.md`
+- Project ethos: `SOUL.md`
 - Deploy script: `scripts/deploy-math-chat1.sh`
 - Hub:
   - `light-math-hub/src/App.tsx`
@@ -75,15 +76,19 @@ Default local ports:
   - `dist/`
   - `.run/`
 
-## 6) Context Memory (Daily + Long-Term)
+## 6) Every Session
+
+Before doing anything else:
+
+1. Read `SOUL.md` — this is who you are.
+2. Read `memory/YYYY-MM-DD.md` for today and yesterday if present.
+3. If in MAIN SESSION (direct chat with the human), also read `MEMORY.md` if present.
+
+## 7) Context Memory (Daily + Long-Term)
 
 Memory is file-based:
 - Daily notes: `memory/YYYY-MM-DD.md`
 - Long-term: `MEMORY.md`
-
-Session start:
-1. Read `MEMORY.md` if present.
-2. Read `memory/YYYY-MM-DD.md` for today and yesterday if present.
 
 Session end:
 1. Append concise summary to today's note:
@@ -95,7 +100,7 @@ Session end:
 
 Never store secrets in memory files.
 
-## 7) Commands You Will Use
+## 8) Commands You Will Use
 
 Hub:
 - `cd light-math-hub && npm install`
@@ -113,7 +118,7 @@ Apps:
 Deployment:
 - `cd /Users/lee/git/math && ./scripts/deploy-math-chat1.sh`
 
-## 8) Verification Checklist Before Handoff
+## 9) Verification Checklist Before Handoff
 
 - Build checks:
   - `cd light-math-hub && npm run build`
@@ -124,7 +129,7 @@ Deployment:
   - Launch redirect (`/run/<id>`)
   - Spotlight page (`/apps/<id>/game-spotlight.html`)
 
-## 9) Scope and Non-Goals
+## 10) Scope and Non-Goals
 
 - Keep changes localized to Hub, app host, or specific app.
 - Do not change `/apps/<id>/` path conventions unless explicitly requested.

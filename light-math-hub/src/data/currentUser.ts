@@ -3,6 +3,7 @@ export const currentUser = {
   role: "教学管理员",
   roleEn: "Teaching Admin",
   permissions: [
+    "light.app.allocation.expression.lab",
     "light.app.fraction.lab",
     "light.app.cube.surface.lab",
     "light.app.density.lab",

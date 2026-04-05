@@ -2,6 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Every Session
+
+Before doing anything else:
+
+1. Read `SOUL.md` — this is who you are
+2. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
+3. **If in MAIN SESSION** (direct chat with the human): Also read `MEMORY.md`
+
 ## What Is This Project
 
 A math education platform (https://math.chat1.co) with two sub-projects:
