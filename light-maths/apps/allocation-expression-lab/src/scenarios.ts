@@ -2,6 +2,96 @@ import { AllocationScenario, AllocationVariant, SignOperator } from "./types";
 
 export const BUILTIN_SCENARIOS: AllocationScenario[] = [
   {
+    id: "candy-shortage",
+    title: "分糖缺颗",
+    theme: "candy",
+    generatedBy: "builtin",
+    badge: "数量场景",
+    story: "若每人 8 颗糖，缺 6 颗；若每人 10 颗，缺 16 颗。共有几个人？共有几颗糖？",
+    introLine: "假设有 5 个人，看看两种分法下糖的缺口各是多少。",
+    unknownLabel: "人数",
+    unknownSymbol: "x",
+    itemLabel: "糖",
+    itemUnit: "颗",
+    groupLabel: "人",
+    solvedValue: 5,
+    note: "两个条件都用\u201c缺\u201d\u2014\u2014表示总量不够，关键是判断两种分法下缺口的方向都是减法。",
+    variants: [
+      {
+        id: "candy-shortage-a",
+        label: "条件一",
+        sentence: "每人 8 颗，缺 6 颗糖。",
+        kind: "capacity-adjustment",
+        coefficient: 8,
+        operator: "-",
+        adjustment: 6,
+        adjustmentLabel: "缺 6 颗糖",
+        explanation: "按每人 8 颗计算共需 8x 颗，但实际只有 8x - 6 颗——少了 6 颗。",
+        correctReason: "“缺 6 颗”说明实际糖数比 8x 少了 6，所以写成 8x - 6。",
+        wrongReason: "写成 8x + 6 表示糖比需要的还多 6 颗，和“缺”的意思相反。"
+      },
+      {
+        id: "candy-shortage-b",
+        label: "条件二",
+        sentence: "每人 10 颗，缺 16 颗糖。",
+        kind: "capacity-adjustment",
+        coefficient: 10,
+        operator: "-",
+        adjustment: 16,
+        adjustmentLabel: "缺 16 颗糖",
+        explanation: "按每人 10 颗计算共需 10x 颗，但实际只有 10x - 16 颗——少了 16 颗。",
+        correctReason: "“缺 16 颗”说明实际糖数比 10x 少了 16，所以写成 10x - 16。",
+        wrongReason: "写成 10x + 16 表示糖反而多出 16 颗，和“缺”的意思相反。"
+      }
+    ]
+  },
+  {
+    id: "chocolate-leftover",
+    title: "巧克力分发",
+    theme: "chocolate",
+    generatedBy: "builtin",
+    badge: "生活场景",
+    story:
+      "一盒巧克力分给几个小朋友：每人 8 颗则多出 10 颗；每人 10 颗则有 2 个小朋友分不到。共有几个小朋友？这盒巧克力有多少颗？",
+    introLine: "假设有 15 个小朋友，看看两种分法下巧克力各怎么变化。",
+    unknownLabel: "小朋友人数",
+    unknownSymbol: "x",
+    itemLabel: "巧克力",
+    itemUnit: "颗",
+    groupLabel: "人",
+    solvedValue: 15,
+    note: "条件一用“多”（加法），条件二用“分不到”（减少人数，group-offset）——方向相反，是本题核心难点。",
+    variants: [
+      {
+        id: "chocolate-leftover-a",
+        label: "条件一",
+        sentence: "每人 8 颗，多出 10 颗巧克力。",
+        kind: "capacity-adjustment",
+        coefficient: 8,
+        operator: "+",
+        adjustment: 10,
+        adjustmentLabel: "多出 10 颗",
+        explanation: "x 个小朋友每人 8 颗共用 8x 颗，多出 10 颗说明总数是 8x + 10。",
+        correctReason: "“多出 10 颗”表示总巧克力比 8x 还多 10，所以写成 8x + 10。",
+        wrongReason: "写成 8x - 10 表示糖不够分，和“多出”的意思相反。"
+      },
+      {
+        id: "chocolate-leftover-b",
+        label: "条件二",
+        sentence: "每人 10 颗，有 2 个小朋友分不到。",
+        kind: "group-offset",
+        coefficient: 10,
+        operator: "-",
+        offset: 2,
+        offsetLabel: "有 2 人分不到",
+        explanation:
+          "有 2 个小朋友分不到，说明实际只有 x - 2 个人拿到糖，总数是 (x - 2) × 10。",
+        correctReason: "“有 2 人分不到”表示领到糖的人数是 x - 2，再乘每人 10 颗。",
+        wrongReason: "写成 10(x + 2) 表示领到糖的人数反而多出 2，和题意相反。"
+      }
+    ]
+  },
+  {
     id: "rooms-basic",
     title: "学生住宿分房",
     theme: "rooms",

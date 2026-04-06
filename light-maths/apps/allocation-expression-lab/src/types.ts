@@ -1,5 +1,5 @@
 export type SignOperator = "+" | "-";
-export type ScenarioTheme = "rooms" | "apples" | "custom";
+export type ScenarioTheme = "candy" | "chocolate" | "rooms" | "apples" | "custom";
 export type ScenarioSource = "builtin" | "ai";
 
 export type CapacityAdjustmentVariant = {

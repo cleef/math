@@ -1,8 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BUILTIN_SCENARIOS,
   actualGroupCount,
   evaluateVariant,
+  expressionForVariant,
+  oppositeOperator,
   scenarioConcreteTotal
 } from "./scenarios";
 import { AllocationScenario, AllocationVariant } from "./types";
@@ -58,7 +60,13 @@ function buildBatchRevealCounts(
   });
 }
 
-function concreteStoryLine(scenario: AllocationScenario, concreteTotal: number): string {
+function concreteStoryLine(scenario: AllocationScenario): string {
+  // candy and chocolate scenarios have self-contained story text
+  if (scenario.theme === "candy" || scenario.theme === "chocolate") {
+    return scenario.story;
+  }
+
+  const concreteTotal = scenarioConcreteTotal(scenario);
   const tail = scenario.story.replace(/^给[^，]+，/, "");
 
   if (scenario.theme === "rooms") {
@@ -73,6 +81,28 @@ function concreteStoryLine(scenario: AllocationScenario, concreteTotal: number):
 }
 
 function relationLabels(scenario: AllocationScenario) {
+  if (scenario.theme === "candy") {
+    return {
+      first: "人数",
+      second: "所需糖果",
+      third: "实际糖果",
+      firstUnit: "人",
+      secondUnit: "颗",
+      thirdUnit: "颗"
+    };
+  }
+
+  if (scenario.theme === "chocolate") {
+    return {
+      first: "人数",
+      second: "基础用量",
+      third: "实际总数",
+      firstUnit: "人",
+      secondUnit: "颗",
+      thirdUnit: "颗"
+    };
+  }
+
   if (scenario.theme === "rooms") {
     return {
       first: "房间",
@@ -186,6 +216,14 @@ function usePlayback(playbackKey: string, durationMs: number) {
   };
 }
 
+function themeToken(theme: AllocationScenario["theme"]): string {
+  if (theme === "candy") return "🍬";
+  if (theme === "chocolate") return "🍫";
+  if (theme === "rooms") return "🧑";
+  if (theme === "apples") return "🍎";
+  return "●";
+}
+
 function PlaybackConditionCard({
   scenario,
   variant,
@@ -272,7 +310,7 @@ function PlaybackConditionCard({
                         : "token--empty"
                     }`}
                     aria-hidden="true"
-                  />
+                  >{slotIndex < filled ? themeToken(scenario.theme) : ""}</span>
                 ))}
               </div>
             </section>
@@ -290,16 +328,92 @@ function PlaybackConditionCard({
   );
 }
 
-function RelationCaseCard({
+type GuessState = "pending" | "correct" | "wrong";
+
+function ExpressionGuessCard({
   scenario,
   variant,
-  heading
+  onRevealed
 }: {
   scenario: AllocationScenario;
   variant: AllocationVariant;
-  heading: string;
+  onRevealed: () => void;
 }) {
-  const xValue = scenario.solvedValue;
+  const correctExpr = expressionForVariant(variant);
+  const wrongExpr = expressionForVariant(variant, "x", oppositeOperator(variant.operator));
+
+  const [guessState, setGuessState] = useState<GuessState>("pending");
+  // Randomize choices order once on mount
+  const [choicesOrder] = useState<[string, string]>(() =>
+    Math.random() < 0.5 ? [correctExpr, wrongExpr] : [wrongExpr, correctExpr]
+  );
+
+  const handleChoice = (chosen: string) => {
+    const isCorrect = chosen === correctExpr;
+    setGuessState(isCorrect ? "correct" : "wrong");
+  };
+
+  return (
+    <div className="guess-card">
+      <p className="guess-card__prompt">{variant.sentence}</p>
+      <p className="guess-card__question">
+        {scenario.itemLabel}总数怎么表示？
+      </p>
+      <div className="guess-card__choices">
+        {choicesOrder.map((expr) => {
+          const isCorrect = expr === correctExpr;
+          const isSelected = guessState !== "pending";
+          const wasChosen = isSelected && (
+            (isCorrect && guessState === "correct") ||
+            (!isCorrect && guessState === "wrong")
+          );
+
+          return (
+            <button
+              key={expr}
+              type="button"
+              className={`guess-choice ${
+                isSelected
+                  ? isCorrect
+                    ? "guess-choice--correct"
+                    : wasChosen
+                    ? "guess-choice--wrong"
+                    : "guess-choice--muted"
+                  : ""
+              }`}
+              disabled={isSelected}
+              onClick={() => handleChoice(expr)}
+            >
+              {expr}
+            </button>
+          );
+        })}
+      </div>
+      {guessState !== "pending" ? (
+        <div className={`guess-feedback guess-feedback--${guessState}`}>
+          <p>
+            {guessState === "correct" ? variant.correctReason : variant.wrongReason}
+          </p>
+          <button type="button" className="guess-reveal-btn" onClick={onRevealed}>
+            看关系链 →
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function RelationCaseCard({
+  scenario,
+  variant,
+  xValue,
+  isSolved
+}: {
+  scenario: AllocationScenario;
+  variant: AllocationVariant;
+  xValue: number;
+  isSolved: boolean;
+}) {
   const labels = relationLabels(scenario);
   const groupValue = actualGroupCount(variant, xValue);
   const baseValue = numericBaseValue(variant, xValue);
@@ -309,14 +423,8 @@ function RelationCaseCard({
   const actualExpression = numericActualExpression(variant, xValue);
 
   return (
-    <article className="relation-card">
-      <div className="relation-card__header">
-        <div>
-          <p className="composer__eyebrow">{heading}</p>
-          <h3>{variant.sentence}</h3>
-        </div>
-      </div>
-
+    <article className={`relation-card ${isSolved ? "relation-card--solved" : ""}`}>
+      <p className="relation-card__sentence">{variant.sentence}</p>
       <div className="relation-flow">
         <div className="relation-node">
           <span>{labels.first}</span>
@@ -336,7 +444,7 @@ function RelationCaseCard({
           </em>
         </div>
         <div className="relation-arrow">→</div>
-        <div className="relation-node relation-node--final">
+        <div className={`relation-node relation-node--final ${isSolved ? "relation-node--match" : ""}`}>
           <span>{labels.third}</span>
           <strong>{actualExpression}</strong>
           <em>
@@ -349,61 +457,32 @@ function RelationCaseCard({
   );
 }
 
-function generateApiPath() {
-  return "/api/apps/allocation-expression-lab/scenario/generate";
-}
-
 export function AllocationExpressionLabApp() {
   const [selectedScenarioId, setSelectedScenarioId] = useState(BUILTIN_SCENARIOS[0].id);
-  const [customScenario, setCustomScenario] = useState<AllocationScenario | null>(null);
-  const [aiPrompt, setAiPrompt] = useState("分书本或者分桌椅都可以，要适合小学应用题。");
-  const [isAiPanelOpen, setIsAiPanelOpen] = useState(false);
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiMessage, setAiMessage] = useState("");
-
-  const allScenarios = useMemo(
-    () => (customScenario ? [...BUILTIN_SCENARIOS, customScenario] : BUILTIN_SCENARIOS),
-    [customScenario]
-  );
 
   const activeScenario =
-    allScenarios.find((scenario) => scenario.id === selectedScenarioId) ?? allScenarios[0];
+    BUILTIN_SCENARIOS.find((scenario) => scenario.id === selectedScenarioId) ?? BUILTIN_SCENARIOS[0];
 
-  const concreteTotal = scenarioConcreteTotal(activeScenario);
-  const storyLine = concreteStoryLine(activeScenario, concreteTotal);
+  const storyLine = concreteStoryLine(activeScenario);
 
-  const handleGenerateScenario = async () => {
-    setAiLoading(true);
-    setAiMessage("");
+  // x-slider state: start a bit below the solution so there's something to discover
+  const [xValue, setXValue] = useState(() => Math.max(1, activeScenario.solvedValue - 2));
+  const xMax = Math.max(12, activeScenario.solvedValue * 2);
 
-    try {
-      const response = await fetch(generateApiPath(), {
-        method: "POST",
-        headers: {
-          "content-type": "application/json"
-        },
-        body: JSON.stringify({
-          prompt: aiPrompt
-        })
-      });
+  // Per-variant reveal state: tracks whether the guess has been answered
+  const [revealedVariants, setRevealedVariants] = useState<Record<string, boolean>>({});
 
-      const data = (await response.json()) as { message?: string; scenario?: AllocationScenario };
+  // Reset exploration state when scenario changes
+  useEffect(() => {
+    setXValue(Math.max(1, activeScenario.solvedValue - 2));
+    setRevealedVariants({});
+  }, [activeScenario.id, activeScenario.solvedValue]);
 
-      if (!response.ok || !data.scenario) {
-        setAiMessage(data.message ?? "AI 场景暂时不可用");
-        return;
-      }
+  const allRevealed = activeScenario.variants.every((v) => revealedVariants[v.id]);
 
-      setCustomScenario(data.scenario);
-      setSelectedScenarioId(data.scenario.id);
-      setAiMessage(data.scenario.title);
-      setIsAiPanelOpen(false);
-    } catch {
-      setAiMessage("AI 场景暂时不可用");
-    } finally {
-      setAiLoading(false);
-    }
-  };
+  const val0 = evaluateVariant(activeScenario.variants[0], xValue);
+  const val1 = evaluateVariant(activeScenario.variants[1], xValue);
+  const isSolved = val0 === val1 && xValue > 0;
 
   return (
     <main
@@ -424,50 +503,15 @@ export function AllocationExpressionLabApp() {
               key={scenario.id}
               className={selectedScenarioId === scenario.id ? "is-selected" : ""}
               type="button"
-              onClick={() => {
-                setSelectedScenarioId(scenario.id);
-                setIsAiPanelOpen(false);
-              }}
+              onClick={() => setSelectedScenarioId(scenario.id)}
             >
               {scenario.title}
             </button>
           ))}
-          <button
-            className={
-              isAiPanelOpen || activeScenario.generatedBy === "ai"
-                ? "is-selected ai-trigger"
-                : "ai-trigger"
-            }
-            type="button"
-            onClick={() => setIsAiPanelOpen((current) => !current)}
-          >
-            AI 新场景
-          </button>
         </div>
-
-        {isAiPanelOpen ? (
-          <div className="ai-panel">
-            <textarea
-              rows={3}
-              value={aiPrompt}
-              onChange={(event) => setAiPrompt(event.target.value)}
-              placeholder="例如：分书本、分船、分桌椅"
-            />
-            <div className="ai-panel__actions">
-              <button type="button" onClick={handleGenerateScenario} disabled={aiLoading}>
-                {aiLoading ? "生成中..." : "生成"}
-              </button>
-            </div>
-          </div>
-        ) : null}
-
-        {aiMessage ? <p className="ai-message">{aiMessage}</p> : null}
       </section>
 
       <section className="lesson story-board">
-        <div className="story-board__meta">
-          <span>{activeScenario.badge}</span>
-        </div>
         <p className="story-board__story">{storyLine}</p>
       </section>
 
@@ -487,20 +531,87 @@ export function AllocationExpressionLabApp() {
       </section>
 
       <section className="lesson lesson--bridge">
-        <div className="trial-panel trial-panel--static">
-          <div className="composer-grid">
-            <RelationCaseCard
-              scenario={activeScenario}
-              variant={activeScenario.variants[0]}
-              heading="Case 1"
-            />
-            <RelationCaseCard
-              scenario={activeScenario}
-              variant={activeScenario.variants[1]}
-              heading="Case 2"
-            />
+        {/* Guess phase: one card per variant */}
+        {!allRevealed ? (
+          <div className="guess-grid">
+            {activeScenario.variants.map((variant) =>
+              revealedVariants[variant.id] ? (
+                <div key={variant.id} className="guess-done-placeholder">
+                  <span>✓</span>
+                  <p>{variant.sentence}</p>
+                </div>
+              ) : (
+                <ExpressionGuessCard
+                  key={variant.id}
+                  scenario={activeScenario}
+                  variant={variant}
+                  onRevealed={() =>
+                    setRevealedVariants((prev) => ({ ...prev, [variant.id]: true }))
+                  }
+                />
+              )
+            )}
           </div>
-        </div>
+        ) : null}
+
+        {/* Relation cards + slider: shown after both guesses answered */}
+        {allRevealed ? (
+          <>
+            <div className="composer-grid">
+              <RelationCaseCard
+                scenario={activeScenario}
+                variant={activeScenario.variants[0]}
+                xValue={xValue}
+                isSolved={isSolved}
+              />
+              <RelationCaseCard
+                scenario={activeScenario}
+                variant={activeScenario.variants[1]}
+                xValue={xValue}
+                isSolved={isSolved}
+              />
+            </div>
+
+            {/* x-slider */}
+            <div className="x-slider-panel">
+              <div className="x-slider-panel__label">
+                <span>试试不同的 <em>x</em> 值</span>
+                <strong className="x-slider-panel__value">x = {xValue}</strong>
+              </div>
+              <input
+                type="range"
+                min={1}
+                max={xMax}
+                value={xValue}
+                onChange={(e) => setXValue(Number(e.target.value))}
+              />
+              <div className="x-slider-panel__results">
+                <span className={`x-result ${isSolved ? "x-result--match" : ""}`}>
+                  {expressionForVariant(activeScenario.variants[0])} = {val0}
+                </span>
+                <span className="x-results-sep">{isSolved ? "=" : "≠"}</span>
+                <span className={`x-result ${isSolved ? "x-result--match" : ""}`}>
+                  {expressionForVariant(activeScenario.variants[1])} = {val1}
+                </span>
+              </div>
+            </div>
+
+            {/* Convergence badge */}
+            {isSolved ? (
+              <div className="convergence-badge">
+                <span className="convergence-badge__icon">✦</span>
+                <p>两个条件，同一个答案——这就是为什么可以列方程</p>
+              </div>
+            ) : null}
+
+            {/* What-if nudge: shown after solving */}
+            {isSolved ? (
+              <div className="whatif-nudge">
+                <p>如果数字变一变，答案还一样吗？换一个场景再试试。</p>
+              </div>
+            ) : null}
+          </>
+        ) : null}
       </section>
     </main>
   );
