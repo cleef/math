@@ -3,7 +3,7 @@ import { AllocationScenario, AllocationVariant, SignOperator } from "./types";
 export const BUILTIN_SCENARIOS: AllocationScenario[] = [
   {
     id: "candy-shortage",
-    title: "分糖缺颗",
+    title: "分糖",
     theme: "candy",
     generatedBy: "builtin",
     badge: "数量场景",

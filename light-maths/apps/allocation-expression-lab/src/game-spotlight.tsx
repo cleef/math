@@ -7,10 +7,10 @@ function SpotlightPage() {
     <main className="spotlight-page">
       <section className="spotlight-hero">
         <p className="spotlight-hero__eyebrow">Allocation Expression Lab</p>
-        <h1>为什么这节课先演示，再列式</h1>
+        <h1>为什么这节课先让孩子“看见 ideas”</h1>
         <p>
-          很多学生会把“空闲 12 个床位”写成 <code>10x + 12</code>，不是不会算，而是还没把题意翻译成数量关系。
-          这个 app 先把分配过程演给学生看，再把同一过程抽象成含未知数的表达式。
+          许多学生把“空闲 12 个床位”写成 <code>10x + 12</code>，不是不会算，而是还没真正看见变化发生在哪一层。
+          这个 app 借 Caucher Birkar 所强调的“数学是 ideas 的世界”来设计: 先观察、比较、提问，再把同一件事抽象成表达式。
         </p>
         <a className="spotlight-hero__link" href="./">
           返回主实验页
@@ -19,21 +19,21 @@ function SpotlightPage() {
 
       <section className="spotlight-grid">
         <article>
-          <h2>1. 先看见“发生了什么”</h2>
+          <h2>1. 先看变化，不先判对错</h2>
           <p>
-            用具体数量演示两种分法，并提供开始、暂停、重置。学生先看到哪些是空位、哪些是剩余、哪些是需要补上的新组。
+            主页面先用具体数量演示两种分法，并允许暂停、继续、重置。孩子先看到空位、剩余、缺口、补出来的新组，而不是立刻进入答题压力。
           </p>
         </article>
         <article>
-          <h2>2. 再问“该把变化写在哪里”</h2>
+          <h2>2. 再问“变化落在哪一层”</h2>
           <p>
-            第二步不是直接让学生整式输入，而是只聚焦最容易写反的符号方向：调整总量，还是调整组数；应该加，还是应该减。
+            app 把最关键的数学动作单独拿出来: 到底是在改总量，还是在改组数。学生先判断变化的位置，表达式才不容易写反。
           </p>
         </article>
         <article>
-          <h2>3. 用 AI 拓展新题型</h2>
+          <h2>3. 方程被呈现为“相遇”</h2>
           <p>
-            除了内置的房间和苹果，教师还可以让 AI 生成“分书本”“分桌椅”“分小船”等同结构新场景，继续练习同一种数学表达。
+            当两个表达式在同一个 <code>x</code> 上说出同一个总量，学生看到的不是一条规定，而是两个 ideas 在同一点相遇。这种体验更接近发现，而不是背规则。
           </p>
         </article>
       </section>
@@ -41,9 +41,9 @@ function SpotlightPage() {
       <section className="spotlight-tips">
         <h2>课堂使用建议</h2>
         <ul>
-          <li>先暂停在动画中间，让学生口头说“这里多了什么、少了什么”。</li>
-          <li>再切到抽象区，让学生只判断符号，不急着解方程。</li>
-          <li>最后拖动试代滑杆，看两个表达式什么时候真的表示同一个总量。</li>
+          <li>先把动画停在一半，让学生说“什么没变，什么变了”。</li>
+          <li>进入表达式区后，先追问变化发生在总量还是组数，不急着求解。</li>
+          <li>最后拖动 <code>x</code>，让学生自己观察两个表达式何时相遇、为何相遇。</li>
         </ul>
       </section>
     </main>

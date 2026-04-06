@@ -134,3 +134,14 @@ Deployment:
 - Keep changes localized to Hub, app host, or specific app.
 - Do not change `/apps/<id>/` path conventions unless explicitly requested.
 - Avoid cross-project refactors unless required by the task.
+
+## 11) Frontend Design Guide
+
+When doing frontend design in this repo, prefer visual communication over explanatory UI.
+
+- Reduce instructional text — trust the visual.
+- Bias toward visual meaning over abstract intimidation.
+- The structure should communicate itself before labels explain it.
+- Remove or shrink section labels when layout, spacing, motion, and grouping already make the hierarchy clear.
+- Avoid badges, helper subtitles, and preview announcements if the story, animation, or state transition already carries the meaning.
+- Let important moments emerge visually; do not over-announce them in text.

@@ -15,6 +15,8 @@ const DISPLAY_FONT_STACK =
   '"STKaiti", "KaiTi", "Kaiti SC", "Songti SC", "Noto Serif SC", serif';
 const PLAYBACK_BATCH_MS = 1000;
 
+type GuessState = "pending" | "aligned" | "rethink";
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
@@ -61,7 +63,6 @@ function buildBatchRevealCounts(
 }
 
 function concreteStoryLine(scenario: AllocationScenario): string {
-  // candy and chocolate scenarios have self-contained story text
   if (scenario.theme === "candy" || scenario.theme === "chocolate") {
     return scenario.story;
   }
@@ -224,14 +225,24 @@ function themeToken(theme: AllocationScenario["theme"]): string {
   return "●";
 }
 
+function HeroBoard({ scenario }: { scenario: AllocationScenario }) {
+  return (
+    <section className="hero-board">
+      <div className="hero-board__ring" aria-hidden="true">
+        <div className="hero-board__ring-center">{themeToken(scenario.theme)}</div>
+        <div className="hero-board__orbit hero-board__orbit--a" />
+        <div className="hero-board__orbit hero-board__orbit--b" />
+      </div>
+    </section>
+  );
+}
+
 function PlaybackConditionCard({
   scenario,
-  variant,
-  heading
+  variant
 }: {
   scenario: AllocationScenario;
   variant: AllocationVariant;
-  heading: string;
 }) {
   const xValue = scenario.solvedValue;
   const totalItems = evaluateVariant(variant, xValue);
@@ -266,7 +277,6 @@ function PlaybackConditionCard({
     <article className="mode-card">
       <div className="mode-card__header">
         <div>
-          <p className="mode-card__eyebrow">{heading}</p>
           <h3>{variant.sentence}</h3>
         </div>
         <div className="mode-card__controls">
@@ -281,6 +291,7 @@ function PlaybackConditionCard({
           </button>
         </div>
       </div>
+
       <div className={`card-grid card-grid--${scenario.theme}`}>
         {fillCounts.map((filled, index) => {
           const isFullBatch = filled === slotsPerCard;
@@ -321,21 +332,29 @@ function PlaybackConditionCard({
       {visibleLooseItems > 0 ? (
         <div className="tray">
           <div className="tray__title">剩余</div>
-          <div className="tray__pill">{visibleLooseItems}{scenario.itemUnit}</div>
+          <div className="tray__content">
+            <div className="tray__tokens" aria-hidden="true">
+              {Array.from({ length: visibleLooseItems }, (_, index) => (
+                <span key={`${variant.id}-loose-${index}`} className="token token--filled">
+                  {themeToken(scenario.theme)}
+                </span>
+              ))}
+            </div>
+            <div className="tray__pill">
+              {visibleLooseItems}
+              {scenario.itemUnit}
+            </div>
+          </div>
         </div>
       ) : null}
     </article>
   );
 }
 
-type GuessState = "pending" | "correct" | "wrong";
-
 function ExpressionGuessCard({
-  scenario,
   variant,
   onRevealed
 }: {
-  scenario: AllocationScenario;
   variant: AllocationVariant;
   onRevealed: () => void;
 }) {
@@ -343,30 +362,25 @@ function ExpressionGuessCard({
   const wrongExpr = expressionForVariant(variant, "x", oppositeOperator(variant.operator));
 
   const [guessState, setGuessState] = useState<GuessState>("pending");
-  // Randomize choices order once on mount
   const [choicesOrder] = useState<[string, string]>(() =>
     Math.random() < 0.5 ? [correctExpr, wrongExpr] : [wrongExpr, correctExpr]
   );
 
   const handleChoice = (chosen: string) => {
     const isCorrect = chosen === correctExpr;
-    setGuessState(isCorrect ? "correct" : "wrong");
+    setGuessState(isCorrect ? "aligned" : "rethink");
   };
 
   return (
-    <div className="guess-card">
+    <article className="guess-card">
       <p className="guess-card__prompt">{variant.sentence}</p>
-      <p className="guess-card__question">
-        {scenario.itemLabel}总数怎么表示？
-      </p>
       <div className="guess-card__choices">
         {choicesOrder.map((expr) => {
           const isCorrect = expr === correctExpr;
           const isSelected = guessState !== "pending";
-          const wasChosen = isSelected && (
-            (isCorrect && guessState === "correct") ||
-            (!isCorrect && guessState === "wrong")
-          );
+          const wasChosen =
+            isSelected &&
+            ((isCorrect && guessState === "aligned") || (!isCorrect && guessState === "rethink"));
 
           return (
             <button
@@ -384,22 +398,21 @@ function ExpressionGuessCard({
               disabled={isSelected}
               onClick={() => handleChoice(expr)}
             >
-              {expr}
+              <strong>{expr}</strong>
             </button>
           );
         })}
       </div>
+
       {guessState !== "pending" ? (
         <div className={`guess-feedback guess-feedback--${guessState}`}>
-          <p>
-            {guessState === "correct" ? variant.correctReason : variant.wrongReason}
-          </p>
+          <p>{guessState === "aligned" ? variant.correctReason : variant.wrongReason}</p>
           <button type="button" className="guess-reveal-btn" onClick={onRevealed}>
-            看关系链 →
+            继续
           </button>
         </div>
       ) : null}
-    </div>
+    </article>
   );
 }
 
@@ -465,20 +478,17 @@ export function AllocationExpressionLabApp() {
 
   const storyLine = concreteStoryLine(activeScenario);
 
-  // x-slider state: start a bit below the solution so there's something to discover
   const [xValue, setXValue] = useState(() => Math.max(1, activeScenario.solvedValue - 2));
   const xMax = Math.max(12, activeScenario.solvedValue * 2);
 
-  // Per-variant reveal state: tracks whether the guess has been answered
   const [revealedVariants, setRevealedVariants] = useState<Record<string, boolean>>({});
 
-  // Reset exploration state when scenario changes
   useEffect(() => {
     setXValue(Math.max(1, activeScenario.solvedValue - 2));
     setRevealedVariants({});
   }, [activeScenario.id, activeScenario.solvedValue]);
 
-  const allRevealed = activeScenario.variants.every((v) => revealedVariants[v.id]);
+  const allRevealed = activeScenario.variants.every((variant) => revealedVariants[variant.id]);
 
   const val0 = evaluateVariant(activeScenario.variants[0], xValue);
   const val1 = evaluateVariant(activeScenario.variants[1], xValue);
@@ -496,6 +506,8 @@ export function AllocationExpressionLabApp() {
     >
       <div className="allocation-app__grain" aria-hidden="true" />
 
+      <HeroBoard scenario={activeScenario} />
+
       <section className="scenario-strip">
         <div className="scenario-strip__buttons">
           {BUILTIN_SCENARIOS.map((scenario) => (
@@ -505,33 +517,30 @@ export function AllocationExpressionLabApp() {
               type="button"
               onClick={() => setSelectedScenarioId(scenario.id)}
             >
-              {scenario.title}
+              <span className="scenario-strip__token" aria-hidden="true">
+                {themeToken(scenario.theme)}
+              </span>
+              <span className="scenario-strip__text">
+                <strong>{scenario.title}</strong>
+              </span>
             </button>
           ))}
         </div>
       </section>
 
       <section className="lesson story-board">
+        <p className="story-board__intro">{activeScenario.introLine}</p>
         <p className="story-board__story">{storyLine}</p>
       </section>
 
       <section className="lesson lesson--playback">
         <div className="playback-grid playback-grid--stack">
-          <PlaybackConditionCard
-            scenario={activeScenario}
-            variant={activeScenario.variants[0]}
-            heading="Case 1"
-          />
-          <PlaybackConditionCard
-            scenario={activeScenario}
-            variant={activeScenario.variants[1]}
-            heading="Case 2"
-          />
+          <PlaybackConditionCard scenario={activeScenario} variant={activeScenario.variants[0]} />
+          <PlaybackConditionCard scenario={activeScenario} variant={activeScenario.variants[1]} />
         </div>
       </section>
 
       <section className="lesson lesson--bridge">
-        {/* Guess phase: one card per variant */}
         {!allRevealed ? (
           <div className="guess-grid">
             {activeScenario.variants.map((variant) =>
@@ -543,7 +552,6 @@ export function AllocationExpressionLabApp() {
               ) : (
                 <ExpressionGuessCard
                   key={variant.id}
-                  scenario={activeScenario}
                   variant={variant}
                   onRevealed={() =>
                     setRevealedVariants((prev) => ({ ...prev, [variant.id]: true }))
@@ -552,10 +560,7 @@ export function AllocationExpressionLabApp() {
               )
             )}
           </div>
-        ) : null}
-
-        {/* Relation cards + slider: shown after both guesses answered */}
-        {allRevealed ? (
+        ) : (
           <>
             <div className="composer-grid">
               <RelationCaseCard
@@ -572,10 +577,8 @@ export function AllocationExpressionLabApp() {
               />
             </div>
 
-            {/* x-slider */}
             <div className="x-slider-panel">
               <div className="x-slider-panel__label">
-                <span>试试不同的 <em>x</em> 值</span>
                 <strong className="x-slider-panel__value">x = {xValue}</strong>
               </div>
               <input
@@ -595,23 +598,8 @@ export function AllocationExpressionLabApp() {
                 </span>
               </div>
             </div>
-
-            {/* Convergence badge */}
-            {isSolved ? (
-              <div className="convergence-badge">
-                <span className="convergence-badge__icon">✦</span>
-                <p>两个条件，同一个答案——这就是为什么可以列方程</p>
-              </div>
-            ) : null}
-
-            {/* What-if nudge: shown after solving */}
-            {isSolved ? (
-              <div className="whatif-nudge">
-                <p>如果数字变一变，答案还一样吗？换一个场景再试试。</p>
-              </div>
-            ) : null}
           </>
-        ) : null}
+        )}
       </section>
     </main>
   );
