@@ -1,5 +1,30 @@
 [
   {
+    "id": "pi-approx-lab",
+    "name": "圆与 π 逼近实验",
+    "icon": "π",
+    "description": "通过形状逼近和 π 近似误差，直观看懂圆的两种“越来越接近”。",
+    "longDescription": "页面分成两个互动模块：上半部分用正多边形边数变化展示对圆的逼近；下半部分通过切换 π 的近似值，比较周长与面积计算误差，帮助学生区分“圆不变”和“结果近似”。",
+    "usage": "## 使用方式\n- 先拖动边数滑杆，观察内接多边形与圆的差距如何缩小\n- 点击播放查看从低边数到高边数的连续逼近过程\n- 切换到第二模块，修改半径与 π 取值（如 3、3.14、3.1415）\n- 对比真实值、近似值与误差条，讨论“近似可用但不等于精确”\n\n## 教学建议\n- 先让学生描述图形变化，再引入周长和面积误差\n- 强调圆本身未改变，改变的是公式计算精度\n- 用 3 与 3.14 的差异引导学生判断何时近似足够",
+    "owner": "Light Maths Team",
+    "lastUpdated": "2026-04-12",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": ["几何"],
+    "permissions": ["light.app.pi.approx.lab"],
+    "entryPath": "/apps/pi-approx-lab/",
+    "i18n": {
+      "en-US": {
+        "name": "Circle and Pi Approximation Lab",
+        "description": "See two kinds of \"getting closer\": polygon-to-circle shape approximation and pi-based calculation approximation.",
+        "longDescription": "This app has two linked interactive modules: first, regular polygons with increasing side counts approach a circle; second, different pi approximations are used to compare perimeter and area errors. It helps learners separate \"the circle stays the same\" from \"the calculation is approximate.\"",
+        "usage": "## How to use\n- Drag the side-count slider to see how the inscribed polygon approaches the circle\n- Click Play to watch a continuous approximation from low to high side counts\n- In module two, change radius and pi values (such as 3, 3.14, 3.1415)\n- Compare real values, approximated values, and error bars to discuss why approximation can be useful without being exact\n\n## Teaching tips\n- Ask students to describe visual shape changes before introducing metric errors\n- Emphasize that the circle itself does not change; only computational precision changes\n- Contrast pi = 3 with pi = 3.14 to discuss when an approximation is sufficient",
+        "tags": ["Geometry"]
+      }
+    }
+  },
+  {
     "id": "allocation-expression-lab",
     "name": "分配问题表达实验",
     "icon": "🧩",

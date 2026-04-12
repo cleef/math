@@ -16,6 +16,7 @@
 - First onboarded app: `fraction-lab`.
 - Added density app: `density` (1L density-mass visualizer) and integrated into Hub registry.
 - Added geometry app: `cube-surface-lab` (page 1: cube edge-cut unfolding lesson).
+- Added pi app: `pi-approx-lab` with two linked modules (polygon-to-circle approximation and π approximation error comparison), integrated into Hub at `/apps/pi-approx-lab/`.
 - `cube-surface-lab` now includes page 2 demo of all 11 cube nets with cut-edge lists and unfold animations.
 - Page 2 unfold animation uses hinge-based 3D cube-to-net unfolding (not planar relayout).
 - Page 2 now runs as a step-by-step scissor sequence (one edge per step) with door-style face opening; UI text is English.

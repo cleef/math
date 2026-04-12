@@ -1,0 +1,9 @@
+{
+  "id": "pi-approx-lab",
+  "name": "圆与 π 逼近实验",
+  "version": "1.0.0",
+  "description": "通过多边形逼近与 π 近似误差，直观看懂圆的两种“越来越接近”。",
+  "icon": "π",
+  "entry": "index.html",
+  "owner": "Light Maths Team"
+}

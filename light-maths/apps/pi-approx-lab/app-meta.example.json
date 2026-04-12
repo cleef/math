@@ -1,0 +1,15 @@
+{
+  "id": "pi-approx-lab",
+  "name": "圆与 π 逼近实验",
+  "description": "通过形状逼近和 π 近似误差，直观看懂圆的两种“越来越接近”。",
+  "icon": "π",
+  "longDescription": "页面分成两个互动模块：多边形逼近圆 + π 近似误差对比。",
+  "usage": "## 使用方式\n- 调整边数观察图形逼近\n- 切换 π 近似值观察误差变化",
+  "owner": "Light Maths Team",
+  "lastUpdated": "2026-04-12",
+  "enabled": true,
+  "status": "New",
+  "tags": ["几何"],
+  "permissions": ["light.app.pi.approx.lab"],
+  "entryPath": "/apps/pi-approx-lab/"
+}
