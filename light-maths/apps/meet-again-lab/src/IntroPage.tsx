@@ -45,8 +45,11 @@ function followWaypoints(dist: number, pts: [number, number][]) {
 const VW = 224, VH = 152, CX = 112, CY = 76;
 const LINEAR_X0 = 20;
 const LINEAR_MIN_LEN = 184;
-const LINEAR_TICK = 56;
 const LINEAR_END_PAD = 20;
+// 1m = SPEED_PX_PER_MIN / SPEED_M_PER_MIN px = 0.6 px; 100m = 60px
+const M_TO_PX = SPEED_PX_PER_MIN / SPEED_M_PER_MIN; // ≈ 0.6
+const MILESTONE_INTERVAL_M = 100; // every 100 m
+const MILESTONE_PX = MILESTONE_INTERVAL_M * M_TO_PX; // 60 px
 
 function getPos(type: string, dist: number) {
   switch (type) {
@@ -72,8 +75,8 @@ function getPos(type: string, dist: number) {
 }
 
 // ── Individual panel ──────────────────────────────────────────────────────────
-function ScenarioPanel({ type, label, sublabel, dist, distM }: {
-  type: string; label: string; sublabel: string; dist: number; distM: number;
+function ScenarioPanel({ type, label, sublabel, dist, distM, playing }: {
+  type: string; label: string; sublabel: string; dist: number; distM: number; playing: boolean;
 }) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const { x: baseX, y: baseY, angle } = getPos(type, dist);
@@ -96,6 +99,8 @@ function ScenarioPanel({ type, label, sublabel, dist, distM }: {
   let deco: React.ReactNode = null;
 
   if (type === "linear") {
+    // How many 100m milestones fit in the current track
+    const milestoneCount = Math.floor((linearEnd - LINEAR_X0) / MILESTONE_PX);
     track = (
       <line
         x1={LINEAR_X0}
@@ -110,11 +115,18 @@ function ScenarioPanel({ type, label, sublabel, dist, distM }: {
     deco = (
       <>
         <circle cx={LINEAR_X0} cy={CY} r="6" fill="#D1D5DB" />
-        {Array.from({ length: Math.max(0, Math.floor((linearEnd - LINEAR_X0) / LINEAR_TICK) - 1) }).map((_, i) => {
-          const tickX = LINEAR_X0 + (i + 1) * LINEAR_TICK;
-          return <circle key={tickX} cx={tickX} cy={CY} r="2.5" fill="rgba(209,213,219,0.95)" />;
+        {/* 0m label */}
+        <text x={LINEAR_X0} y={CY + 20} fontSize="9" fill="rgba(0,0,0,0.3)" textAnchor="middle">0</text>
+        {Array.from({ length: milestoneCount }).map((_, i) => {
+          const mX = LINEAR_X0 + (i + 1) * MILESTONE_PX;
+          const mLabel = (i + 1) * MILESTONE_INTERVAL_M;
+          return (
+            <g key={mX}>
+              <line x1={mX} y1={CY - 10} x2={mX} y2={CY + 10} stroke="#D1D5DB" strokeWidth="1.5" />
+              <text x={mX} y={CY + 20} fontSize="9" fill="rgba(0,0,0,0.3)" textAnchor="middle">{mLabel}</text>
+            </g>
+          );
         })}
-        <circle cx={linearEnd} cy={CY} r="6" fill="#D1D5DB" />
       </>
     );
   } else if (type === "shuttle") {
@@ -141,7 +153,7 @@ function ScenarioPanel({ type, label, sublabel, dist, distM }: {
         <span className="sc-panel__label">{label}</span>
         <span className="sc-panel__sub">{sublabel}</span>
       </div>
-      <div ref={scrollRef} className={`sc-svg-shell ${type === "linear" ? "sc-svg-shell--scroll" : ""}`}>
+      <div ref={scrollRef} className={`sc-svg-shell ${type === "linear" ? "sc-svg-shell--scroll" : ""} ${type === "linear" && !playing ? "sc-svg-shell--show-scroll" : ""}`}>
         <svg
           viewBox={`0 0 ${type === "linear" ? linearSvgW : VW} ${VH}`}
           className="sc-svg"
@@ -149,7 +161,7 @@ function ScenarioPanel({ type, label, sublabel, dist, distM }: {
         >
           {deco}
           {track}
-          <PixelDogSprite x={x} y={y} size={18} facingLeft={facingLeft} />
+          <PixelDogSprite x={x} y={y} size={type === "linear" ? 30 : 18} facingLeft={facingLeft} />
         </svg>
       </div>
       <div className="sc-panel__dist">
@@ -263,7 +275,7 @@ export function IntroPage({ onEnter }: { onEnter: () => void }) {
       {/* ── 4 scenario panels ────────────────────────────────────────────── */}
       <div className="scenarios-grid">
         {SCENARIOS.map(s => (
-          <ScenarioPanel key={s.type} {...s} dist={dist} distM={distM} />
+          <ScenarioPanel key={s.type} {...s} dist={dist} distM={distM} playing={playing} />
         ))}
       </div>
 

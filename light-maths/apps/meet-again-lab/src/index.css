@@ -1061,7 +1061,7 @@ body {
 .sc-svg-shell--scroll {
   overflow-x: auto;
   overflow-y: hidden;
-  scrollbar-width: thin;
+  scrollbar-width: none;
   scrollbar-color: rgba(28,25,23,0.22) transparent;
 }
 
@@ -1070,12 +1070,20 @@ body {
 }
 
 .sc-svg-shell--scroll::-webkit-scrollbar-thumb {
-  background: rgba(28,25,23,0.18);
+  background: transparent;
   border-radius: 999px;
 }
 
 .sc-svg-shell--scroll::-webkit-scrollbar-track {
   background: transparent;
+}
+
+.sc-svg-shell--show-scroll {
+  scrollbar-width: thin;
+}
+
+.sc-svg-shell--show-scroll::-webkit-scrollbar-thumb {
+  background: rgba(28,25,23,0.18);
 }
 
 .sc-panel__dist {

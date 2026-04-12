@@ -9,6 +9,7 @@ export const currentUser = {
     "light.app.density.lab",
     "light.app.cosmic.chase",
     "light.app.algebra.balance",
-    "light.app.bias.variance.range"
+    "light.app.bias.variance.range",
+    "light.app.meet.again.lab"
   ]
 };
