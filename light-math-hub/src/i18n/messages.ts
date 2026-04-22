@@ -62,6 +62,7 @@ export type MessageCatalog = {
   appCard: {
     defaultOwner: string;
     introButton: string;
+    openButton: string;
   };
   appTable: {
     app: string;
@@ -142,7 +143,8 @@ export const messages: Record<Locale, MessageCatalog> = {
     },
     appCard: {
       defaultOwner: "数学团队",
-      introButton: "课程介绍"
+      introButton: "课程介绍",
+      openButton: "打开"
     },
     appTable: {
       app: "课程应用",
@@ -221,7 +223,8 @@ export const messages: Record<Locale, MessageCatalog> = {
     },
     appCard: {
       defaultOwner: "Math Team",
-      introButton: "Overview"
+      introButton: "Overview",
+      openButton: "Open"
     },
     appTable: {
       app: "App",

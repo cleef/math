@@ -49,7 +49,7 @@ export default function TopNav({
         <div className="brand-mark" aria-hidden="true">
           MH
         </div>
-        <div>
+        <div className="brand-copy">
           <div className="brand-title">LIGHT MATH HUB</div>
           <div className="brand-subtitle">{topNavText.brandSubtitle}</div>
         </div>

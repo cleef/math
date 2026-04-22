@@ -11,6 +11,8 @@
   - `"PingFang SC", "Microsoft YaHei", "Helvetica Neue", "Roboto", "Droid Sans Fallback", "WenQuanYi Micro Hei", sans-serif`
 - Hub and existing apps no longer depend on Google font imports for title text; title typography now uses the same local system stack to avoid runtime font swap.
 - Hub app cards now use a single-layer icon presentation with larger icon sizing (no nested icon-within-icon framing).
+- Hub home visual baseline now follows `zm-light-app-hub` (blue/white App Store-like style) while preserving local features: i18n language switch, tag filters, and `/app/:id` detail routing.
+- Hub home motion rhythm now includes subtle breathing effects: background aura drift, staggered app-card entrance, and gentle nav/filter panel pulse with reduced-motion fallback.
 
 ## Initial app baseline
 - First onboarded app: `fraction-lab`.
