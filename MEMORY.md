@@ -48,4 +48,4 @@
 - `allocation-expression-lab` has been reframed around the repo's Birkar-inspired ethos: the UI now emphasizes observing invariants, locating where change happens (group count vs total), and experiencing equations as two expressions "meeting", rather than pressure-heavy right/wrong drilling.
 - Active pursuit app in Hub is now `cosmic-chase`; `speed-chase-lab` remains in the repo but is disabled/unlisted in Hub registry.
 - Hub list cards now launch apps directly via `/run/:id`; the detail page is accessed from a hover/focus-only card button.
-- Hub category tags are intentionally limited to one tag per app to keep the filter set compact.
+- Hub app tags are still metadata, but the home list no longer exposes tag chips in the frontend; discovery is currently search-first.

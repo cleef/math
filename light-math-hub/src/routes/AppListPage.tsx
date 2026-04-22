@@ -15,7 +15,6 @@ export default function AppListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryText = (searchParams.get("q") ?? "").trim();
   const query = queryText.toLowerCase();
-  const tagParam = (searchParams.get("tag") ?? "").trim();
   const pageParam = Number(searchParams.get("page") ?? "1");
   const page = Number.isNaN(pageParam) || pageParam < 1 ? 1 : pageParam;
 
@@ -24,25 +23,11 @@ export default function AppListPage() {
     [locale]
   );
 
-  const availableTags = useMemo(() => {
-    const tagSet = new Set<string>();
-    visibleApps.forEach((app) => {
-      app.tags?.forEach((tag) => tagSet.add(tag));
-    });
-    return Array.from(tagSet).sort((a, b) => a.localeCompare(b));
-  }, [visibleApps]);
-
-  const activeTag = tagParam && availableTags.includes(tagParam) ? tagParam : "";
-
   const filteredApps = useMemo(() => {
-    let result = visibleApps;
-    if (activeTag) {
-      result = result.filter((app) => app.tags?.includes(activeTag));
-    }
     if (!query) {
-      return result;
+      return visibleApps;
     }
-    return result.filter((app) => {
+    return visibleApps.filter((app) => {
       const searchable = [
         app.name,
         app.description,
@@ -51,14 +36,19 @@ export default function AppListPage() {
       ].join(" ");
       return searchable.toLowerCase().includes(query);
     });
-  }, [activeTag, query, visibleApps]);
+  }, [query, visibleApps]);
 
   const totalPages = Math.max(1, Math.ceil(filteredApps.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
 
   useEffect(() => {
-    if (page !== safePage) {
+    const hasTagParam = searchParams.has("tag");
+    const shouldNormalizePage = page !== safePage;
+    if (hasTagParam || shouldNormalizePage) {
       const params = new URLSearchParams(searchParams);
+      if (hasTagParam) {
+        params.delete("tag");
+      }
       params.set("page", safePage.toString());
       setSearchParams(params, { replace: true });
     }
@@ -72,49 +62,13 @@ export default function AppListPage() {
     setSearchParams(params);
   };
 
-  const handleTagChange = (tag: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (tag) {
-      params.set("tag", tag);
-    } else {
-      params.delete("tag");
-    }
-    params.set("page", "1");
-    setSearchParams(params);
-  };
-
   return (
     <section className="page">
-      {availableTags.length > 0 ? (
-        <div className="tag-filter">
-          <div className="tag-filter__label">{listText.tagFilterLabel}</div>
-          <div className="tag-filter__chips">
-            <button
-              type="button"
-              className={`tag-chip ${activeTag === "" ? "tag-chip--active" : ""}`}
-              onClick={() => handleTagChange("")}
-            >
-              {listText.allTagLabel}
-            </button>
-            {availableTags.map((tag) => (
-              <button
-                key={tag}
-                type="button"
-                className={`tag-chip ${activeTag === tag ? "tag-chip--active" : ""}`}
-                onClick={() => handleTagChange(tag)}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
-        </div>
-      ) : null}
-
       <div className="filter-summary">
         {listText.filterSummary({
           shown: pagedApps.length,
           total: filteredApps.length,
-          activeTag,
+          activeTag: "",
           query: queryText
         })}
       </div>
