@@ -1,0 +1,9 @@
+{
+  "id": "algebra-balance",
+  "name": "等式平衡实验",
+  "version": "1.0.0",
+  "description": "通过天平与正负项操作，直观理解一元一次方程的平衡与移项。",
+  "icon": "🎈",
+  "entry": "index.html",
+  "owner": "Light Learning Team"
+}

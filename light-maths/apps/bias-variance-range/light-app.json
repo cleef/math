@@ -1,9 +1,0 @@
-{
-  "id": "bias-variance-range",
-  "name": "偏差与方差打靶实验",
-  "version": "1.0.0",
-  "description": "通过四类枪手的打靶分布，直观理解 Bias 与 Variance 的差别。",
-  "icon": "🎯",
-  "entry": "index.html",
-  "owner": "Light Maths Team"
-}

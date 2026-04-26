@@ -1,0 +1,15 @@
+{
+  "id": "your-app-id",
+  "name": "Your App Name",
+  "description": "One-line app summary shown in App Hub.",
+  "icon": "assets/icon.svg",
+  "longDescription": "A longer description of what this app is for and who should use it.",
+  "usage": "## What it does\n- Key flow 1\n- Key flow 2\n\n## Notes\n- Any operation notes",
+  "owner": "Your Team",
+  "lastUpdated": "2026-02-10",
+  "enabled": true,
+  "status": "New",
+  "tags": ["sample"],
+  "permissions": ["light.app.your-app-id"],
+  "entryPath": "/apps/your-app-id/"
+}

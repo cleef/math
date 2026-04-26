@@ -15,7 +15,7 @@ Inspired by Caucher Birkar's description, we treat math not as a cold list of pr
 - Too much pressure damages learning. Play, clarity, and curiosity usually teach better than competition.
 - AI is a tool, not the soul. It can explain, support, and accelerate routine work, but human creativity remains central.
 
-## What This Means For light-math
+## What This Means For light-learning
 
 When we build apps, lessons, interfaces, and interactions in this repo, we should bias toward:
 

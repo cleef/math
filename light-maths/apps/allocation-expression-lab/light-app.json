@@ -1,9 +1,0 @@
-{
-  "id": "allocation-expression-lab",
-  "name": "分配问题表达实验",
-  "version": "1.0.0",
-  "description": "先看具体分配过程，再抽象为含未知数的正确表达式和方程。",
-  "icon": "🧩",
-  "entry": "index.html",
-  "owner": "Light Maths Team"
-}

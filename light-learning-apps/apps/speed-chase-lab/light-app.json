@@ -1,0 +1,9 @@
+{
+  "id": "speed-chase-lab",
+  "name": "银河追击实验",
+  "version": "1.0.0",
+  "description": "通过飞船追赶动画理解追及问题、相对速度和函数图像。",
+  "icon": "🚀",
+  "entry": "index.html",
+  "owner": "Light Learning Team"
+}

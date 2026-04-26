@@ -1,0 +1,357 @@
+[
+  {
+    "id": "pi-approx-lab",
+    "name": "圆与 π 逼近实验",
+    "icon": "π",
+    "description": "通过形状逼近和 π 近似误差，直观看懂圆的两种“越来越接近”。",
+    "longDescription": "页面分成两个互动模块：上半部分用正多边形边数变化展示对圆的逼近；下半部分通过切换 π 的近似值，比较周长与面积计算误差，帮助学生区分“圆不变”和“结果近似”。",
+    "usage": "## 使用方式\n- 先拖动边数滑杆，观察内接多边形与圆的差距如何缩小\n- 点击播放查看从低边数到高边数的连续逼近过程\n- 切换到第二模块，修改半径与 π 取值（如 3、3.14、3.1415）\n- 对比真实值、近似值与误差条，讨论“近似可用但不等于精确”\n\n## 教学建议\n- 先让学生描述图形变化，再引入周长和面积误差\n- 强调圆本身未改变，改变的是公式计算精度\n- 用 3 与 3.14 的差异引导学生判断何时近似足够",
+    "owner": "Light Learning Team",
+    "lastUpdated": "2026-04-12",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": [
+      "几何"
+    ],
+    "permissions": [
+      "light.app.pi.approx.lab"
+    ],
+    "entryPath": "/apps/pi-approx-lab/",
+    "i18n": {
+      "en-US": {
+        "name": "Circle and Pi Approximation Lab",
+        "description": "See two kinds of \"getting closer\": polygon-to-circle shape approximation and pi-based calculation approximation.",
+        "longDescription": "This app has two linked interactive modules: first, regular polygons with increasing side counts approach a circle; second, different pi approximations are used to compare perimeter and area errors. It helps learners separate \"the circle stays the same\" from \"the calculation is approximate.\"",
+        "usage": "## How to use\n- Drag the side-count slider to see how the inscribed polygon approaches the circle\n- Click Play to watch a continuous approximation from low to high side counts\n- In module two, change radius and pi values (such as 3, 3.14, 3.1415)\n- Compare real values, approximated values, and error bars to discuss why approximation can be useful without being exact\n\n## Teaching tips\n- Ask students to describe visual shape changes before introducing metric errors\n- Emphasize that the circle itself does not change; only computational precision changes\n- Contrast pi = 3 with pi = 3.14 to discuss when an approximation is sufficient",
+        "tags": [
+          "Geometry"
+        ]
+      }
+    },
+    "subject": "math"
+  },
+  {
+    "id": "allocation-expression-lab",
+    "name": "分配问题表达实验",
+    "icon": "🧩",
+    "description": "先看具体分配过程，再抽象成含未知数的正确表达式和方程。",
+    "longDescription": "围绕“空闲、剩余、少用、补加”这些最容易写反的语义设计。学生先观察房间分配或苹果装袋的动画，再判断调整量应写在总量上还是组数上。",
+    "usage": "## 使用方式\n- 先选择内置场景，或点击“AI 生成新场景”\n- 点击【开始】观看两种分配过程，可随时暂停或重置\n- 再到下方判断表达式里该用加号还是减号\n- 最后拖动试代滑杆，检查两个表达式什么时候表示同一个总量\n\n## 教学建议\n- 先停在动画中间，让学生口头描述“多了什么、少了什么”\n- 再让学生只判断符号方向，不急着解方程\n- 最后再总结“调整总量”和“调整组数”的区别",
+    "owner": "Light Learning Team",
+    "lastUpdated": "2026-04-04",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": [
+      "代数"
+    ],
+    "permissions": [
+      "light.app.allocation.expression.lab"
+    ],
+    "entryPath": "/apps/allocation-expression-lab/",
+    "i18n": {
+      "en-US": {
+        "name": "Allocation Expression Lab",
+        "description": "Watch a concrete distribution process first, then translate it into correct algebraic expressions and equations.",
+        "longDescription": "Built around the sign-direction mistakes students often make in allocation word problems. Learners first observe animated room or bagging scenarios, then decide whether an adjustment belongs in the total amount or the group count.",
+        "usage": "## How to use\n- Pick a built-in scenario or click \"Generate with AI\"\n- Click Start to watch both distribution methods, with pause and reset available anytime\n- Decide whether each expression should use plus or minus\n- Drag the trial slider to see when both expressions represent the same total\n\n## Teaching tips\n- Pause mid-animation and ask students what increased or decreased\n- Let them focus on sign direction before solving the equation\n- Summarize the difference between adjusting the total and adjusting the number of groups",
+        "tags": [
+          "Algebra"
+        ]
+      }
+    },
+    "subject": "math"
+  },
+  {
+    "id": "cube-surface-lab",
+    "name": "立方体表面积实验室",
+    "icon": "🧊",
+    "description": "通过切割与展开动画理解立方体表面积。",
+    "longDescription": "围绕立方体展开图与表面积计算设计，支持逐步切边、开门展开与 11 种展开图观察。",
+    "usage": "## 使用方式\n- 点击“开始学习”进入实验\n- 在切边步骤中按顺序剪开边\n- 观察展开前后的对应关系并计算表面积\n\n## 教学建议\n- 先让学生预测展开图\n- 再通过动画验证并纠错\n- 最后回到公式进行迁移练习",
+    "owner": "Light Learning Team",
+    "lastUpdated": "2026-02-25",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": [
+      "几何"
+    ],
+    "permissions": [
+      "light.app.cube.surface.lab"
+    ],
+    "entryPath": "/apps/cube-surface-lab/",
+    "i18n": {
+      "en-US": {
+        "name": "Cube Surface Lab",
+        "description": "Understand cube surface area through cutting and unfolding animations.",
+        "longDescription": "Designed around cube nets and surface-area calculation, with step-by-step edge cuts, door-style unfolding, and all 11 net patterns.",
+        "usage": "## How to use\n- Click \"Start Learning\" to open the lab\n- Cut edges in sequence during the cut phase\n- Observe before/after unfolding and calculate surface area\n\n## Teaching tips\n- Let students predict the net first\n- Verify and correct through animation\n- Return to the formula for transfer practice",
+        "tags": [
+          "Geometry"
+        ]
+      }
+    },
+    "subject": "math"
+  },
+  {
+    "id": "fraction-lab",
+    "name": "分数训练工坊",
+    "icon": "🧮",
+    "description": "面向小学阶段的分数加减乘除训练课，支持讲解与即时反馈。",
+    "longDescription": "围绕“同分母、异分母、约分、通分”四类核心能力设计。教师可用于课堂投屏演示，学生可用于课后自主训练。",
+    "usage": "## 使用方式\n- 点击“开始学习”进入训练页\n- 先阅读例题，再完成练习\n- 提交后查看即时解析\n\n## 教学建议\n- 课堂上先做 2 题示范\n- 再让学生分组完成剩余题目\n- 最后统一讲解高频错误",
+    "owner": "Light Learning Team",
+    "lastUpdated": "2026-02-23",
+    "listed": true,
+    "enabled": true,
+    "status": "Featured",
+    "tags": [
+      "分数"
+    ],
+    "permissions": [
+      "light.app.fraction.lab"
+    ],
+    "entryPath": "/apps/fraction-lab/",
+    "i18n": {
+      "en-US": {
+        "name": "Fraction Practice Studio",
+        "description": "Fraction arithmetic training for elementary learners with guided hints and instant feedback.",
+        "longDescription": "Built around four core skills: same-denominator operations, unlike-denominator operations, reduction, and common denominators. Suitable for classroom demos and self-practice.",
+        "usage": "## How to use\n- Click \"Start Learning\" to enter practice mode\n- Read worked examples first, then solve exercises\n- Submit to view instant explanations\n\n## Teaching tips\n- Demonstrate 2 questions first in class\n- Let students finish the remaining set in groups\n- Summarize high-frequency mistakes at the end",
+        "tags": [
+          "Fractions"
+        ]
+      }
+    },
+    "subject": "math"
+  },
+  {
+    "id": "density",
+    "name": "密度可视化实验",
+    "icon": "⚖️",
+    "description": "在固定 1L 体积下观察密度变化如何影响质量。",
+    "longDescription": "通过动态粒子立方体与实时质量读数，帮助学生理解密度公式 ρ = m / V 以及材料密度差异。",
+    "usage": "## 使用方式\n- 点击“开始学习”进入实验\n- 先选择材料预设，再拖动密度滑杆\n- 观察 1L 容器下质量读数变化并记录\n\n## 教学建议\n- 先让学生预测不同材料质量大小\n- 再用可视化结果验证并讨论原因\n- 最后回到公式做题巩固",
+    "owner": "Light Learning Team",
+    "lastUpdated": "2026-02-27",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": [
+      "密度"
+    ],
+    "permissions": [
+      "light.app.density.lab"
+    ],
+    "entryPath": "/apps/density/",
+    "i18n": {
+      "en-US": {
+        "name": "Density Visual Lab",
+        "description": "See how density changes mass under a fixed 1L volume.",
+        "longDescription": "Dynamic particle cubes and live mass readings help students understand the density formula ρ = m / V and differences across materials.",
+        "usage": "## How to use\n- Click \"Start Learning\" to enter the lab\n- Pick a material preset, then drag the density slider\n- Observe and record mass changes in a 1L container\n\n## Teaching tips\n- Ask students to predict relative masses first\n- Use visualization results to verify and discuss causes\n- Return to formula-based exercises for reinforcement",
+        "tags": [
+          "Density"
+        ]
+      }
+    },
+    "subject": "math"
+  },
+  {
+    "id": "speed-chase-lab",
+    "name": "银河追击实验",
+    "icon": "🚀",
+    "description": "用两艘飞船的追赶过程，直观理解追及问题、相对速度和函数图像。",
+    "longDescription": "围绕“先出发、后追赶”的经典路程问题设计。学生可以调节先出发时间与两船速度，实时观察星空追逐、数据表和函数曲线如何同步变化。",
+    "usage": "## 使用方式\n- 调整先出发时间、人类飞船速度、三体飞船速度\n- 点击“开始追赶”观察飞船位置变化\n- 对照左侧表格和右侧曲线，总结剩余距离如何随时间变化\n\n## 教学建议\n- 先让学生口头说出初始相距和每分钟追近多少\n- 再用动画验证表格与图像是否一致\n- 最后写出“剩余距离 = 初始距离 - 相对速度 × t”",
+    "owner": "Light Learning Team",
+    "lastUpdated": "2026-03-26",
+    "listed": false,
+    "enabled": false,
+    "status": "New",
+    "tags": [
+      "追及"
+    ],
+    "permissions": [
+      "light.app.speed.chase.lab"
+    ],
+    "entryPath": "/apps/speed-chase-lab/",
+    "i18n": {
+      "en-US": {
+        "name": "Galaxy Chase Lab",
+        "description": "Use a spaceship pursuit story to understand catch-up problems, relative speed, and function graphs.",
+        "longDescription": "Built around the classic head-start pursuit problem. Students adjust the lead time and both speeds, then watch the starfield chase, data table, and graph update together.",
+        "usage": "## How to use\n- Adjust lead time, human ship speed, and Trisolaran ship speed\n- Click \"Start Chase\" to watch the pursuit\n- Compare the table and the graph to summarize how the remaining distance changes over time\n\n## Teaching tips\n- Ask students to say the initial gap and relative speed first\n- Use the animation to verify the table and graph together\n- Finish with: remaining distance = initial distance - relative speed × t",
+        "tags": [
+          "Pursuit"
+        ]
+      }
+    },
+    "subject": "math"
+  },
+  {
+    "id": "algebra-balance",
+    "name": "等式平衡实验",
+    "icon": "🎈",
+    "description": "通过天平与正负项操作，直观理解一元一次方程的平衡与移项。",
+    "longDescription": "使用左右盘、悬挂负项与可视化抵消效果，帮助学生理解“等式两边同时进行同样操作”以及加减法与项抵消的关系。",
+    "usage": "## 使用方式\n- 点击“Edit Problem”可手工编辑方程与 x 值\n- 从上方素材区拖动正负项到左右隐藏感应区\n- 观察天平倾斜与同侧可抵消项的淡化提示\n\n## 教学建议\n- 先让学生口头预测哪一边更重\n- 通过拖拽演示“同加同减”保持平衡\n- 引导学生根据抵消提示整理同类项",
+    "owner": "Light Learning Team",
+    "lastUpdated": "2026-03-01",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": [
+      "代数"
+    ],
+    "permissions": [
+      "light.app.algebra.balance"
+    ],
+    "entryPath": "/apps/algebra-balance/",
+    "i18n": {
+      "en-US": {
+        "name": "Algebra Balance Lab",
+        "description": "Use a balance beam with positive and negative terms to understand linear-equation balance operations.",
+        "longDescription": "Students manipulate terms on both sides, observe cancellation hints, and learn why applying the same operation to both sides preserves equation balance.",
+        "usage": "## How to use\n- Click \"Edit Problem\" to enter equation coefficients and x value\n- Drag positive/negative terms into left or right hidden sensing zones\n- Watch beam tilt and cancellation fading cues on each side\n\n## Teaching tips\n- Ask students to predict which side is heavier first\n- Demonstrate same-operation-on-both-sides with drag actions\n- Use cancellation cues to guide collecting like terms",
+        "tags": [
+          "Algebra"
+        ]
+      }
+    },
+    "subject": "math"
+  },
+  {
+    "id": "cosmic-chase",
+    "name": "宇宙追及实验室",
+    "icon": "🛸",
+    "description": "用星空飞船的追赶演示，直观理解追及问题与线性函数图像。",
+    "longDescription": "围绕先出发、后追赶的经典路程问题设计。学生可调节先出发时间与两船速度，实时观察星空飞船位置、时间记录表和函数曲线三者联动变化。",
+    "usage": "## 使用方式\n- 调整先出发时间、人类飞船速度、三体飞船速度\n- 点击【开始追赶】观察星空中的追及过程\n- 对照左侧表格和右侧曲线，总结剩余距离随时间变化的规律\n\n## 教学建议\n- 先让学生口头说出初始相距和每分钟追近多少\n- 再用动画验证表格与图像是否一致\n- 最后引导学生写出函数关系式：剩余距离 = 初始距离 − 每分钟追近 × t",
+    "owner": "Light Learning Team",
+    "lastUpdated": "2026-03-26",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": [
+      "追及"
+    ],
+    "permissions": [
+      "light.app.cosmic.chase"
+    ],
+    "entryPath": "/apps/cosmic-chase/",
+    "i18n": {
+      "en-US": {
+        "name": "Cosmic Chase Lab",
+        "description": "Watch spaceships race through the stars to understand catch-up problems and linear functions.",
+        "longDescription": "Built around the classic head-start pursuit problem. Students adjust lead time and both ship speeds, then watch the starfield chase, data table, and function graph update together in real time.",
+        "usage": "## How to use\n- Adjust lead time, human ship speed, and Trisolaran ship speed\n- Click \"Start Chase\" to watch the pursuit\n- Compare the table and graph to discover how remaining distance changes with time\n\n## Teaching tips\n- Ask students to state the initial gap and relative speed first\n- Use the animation to verify the table and graph together\n- Guide students to write: remaining distance = initial distance − relative speed × t",
+        "tags": [
+          "Pursuit"
+        ]
+      }
+    },
+    "subject": "math"
+  },
+  {
+    "id": "meet-again-lab",
+    "name": "折返相遇实验",
+    "icon": "🔄",
+    "description": "通过双向折返动画理解第二次相遇问题，掌握「合计路程法」和位置—时间图像。",
+    "longDescription": "围绕「两人在两端同时出发，多次折返后第二次相遇在何处」设计。学生可调节速度与出发时刻，实时观察折返轨迹、路程累计表和位置—时间图像三者联动。",
+    "usage": "## 使用方式\n- 调整两人速度与出发时间\n- 点击\"开始\"观察折返相遇过程\n- 对照表格与图像，总结第二次相遇时合计路程与全程的关系\n\n## 教学建议\n- 先让学生预测第二次相遇点的位置\n- 用动画验证，引导发现「合计路程 = 3 倍全程」规律\n- 最后让学生用该规律推算具体位置",
+    "owner": "Light Learning Team",
+    "lastUpdated": "2026-04-03",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": [
+      "路程"
+    ],
+    "permissions": [
+      "light.app.meet.again.lab"
+    ],
+    "entryPath": "/apps/meet-again-lab/",
+    "i18n": {
+      "en-US": {
+        "name": "Meet Again Lab",
+        "description": "Use two-way bounce animations to understand the second-meeting problem and the total-distance method.",
+        "longDescription": "Centered on the classic problem: two people start from opposite ends and bounce back; where do they meet the second time? Students adjust speeds and start times, then watch the bounce paths, cumulative distance table, and position–time graph update together.",
+        "usage": "## How to use\n- Adjust both speeds and start times\n- Click \"Start\" to watch the bouncing-meeting process\n- Compare the table and graph to find the relationship between total distance at the second meeting and the full route length\n\n## Teaching tips\n- Ask students to predict the second meeting point first\n- Use the animation to verify and guide discovery of the rule: total distance = 3× the full route\n- Have students use the rule to calculate the exact position",
+        "tags": [
+          "Distance"
+        ]
+      }
+    },
+    "subject": "math"
+  },
+  {
+    "id": "bias-variance-range",
+    "name": "偏差与方差打靶实验",
+    "icon": "🎯",
+    "description": "通过四类枪手的打靶分布，直观理解偏差与方差的差别。",
+    "longDescription": "围绕“是否打得准、是否打得稳”设计，学生可切换四种 Bias + Variance 组合，连打 10 枪后观察平均落点与散布范围。",
+    "usage": "## 使用方式\n- 先选择一种枪手类型\n- 点击靶纸连续打满 10 枪\n- 观察平均落点与散布程度，并判断是偏差大还是方差大\n\n## 教学建议\n- 先让学生只看名字猜测分布形态\n- 再分别打完四种枪手进行对比\n- 最后总结“Bias 看中心偏移，Variance 看散布范围”",
+    "owner": "Light Learning Team",
+    "lastUpdated": "2026-03-17",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": [
+      "统计"
+    ],
+    "permissions": [
+      "light.app.bias.variance.range"
+    ],
+    "entryPath": "/apps/bias-variance-range/",
+    "i18n": {
+      "en-US": {
+        "name": "Bias Variance Range",
+        "description": "Compare four shooter patterns to understand bias and variance through target shots.",
+        "longDescription": "Students switch among four Bias + Variance combinations, fire 10 shots, and compare mean impact position with shot spread.",
+        "usage": "## How to use\n- Pick one shooter type first\n- Click the target until all 10 shots are fired\n- Compare the mean impact with the spread to decide whether bias or variance is large\n\n## Teaching tips\n- Ask students to predict the pattern from the shooter name first\n- Run all four shooters for side-by-side comparison\n- Summarize: bias is about offset from center, variance is about spread",
+        "tags": [
+          "Statistics"
+        ]
+      }
+    },
+    "subject": "math"
+  },
+  {
+    "id": "english-phonics-lab",
+    "subject": "english",
+    "name": "自然拼读实验室",
+    "icon": "Aa",
+    "description": "用音素、口型、拼写模式和对比练习建立英语自然拼读基础。",
+    "longDescription": "围绕 sound、mouth、pattern、contrast 四层学习结构设计。学生先观察发音和口型，再连接常见拼写模式与例词，最后通过相近音对比降低混淆。",
+    "usage": "## 使用方式\n- 选择一个音素卡片\n- 观察发音提示、口型提示和拼写模式\n- 点击例词进行朗读练习\n- 对比容易混淆的相近音\n\n## 教学建议\n- 先让学生听和模仿，不急着拼写\n- 再把同一音素下的拼写模式放在一起观察\n- 最后用 contrast 练习检查是否真正听出差异",
+    "owner": "Light Learning Team",
+    "lastUpdated": "2026-04-24",
+    "listed": true,
+    "enabled": true,
+    "status": "New",
+    "tags": [
+      "英语",
+      "自然拼读"
+    ],
+    "permissions": [
+      "light.subject.english",
+      "light.app.english.phonics.lab"
+    ],
+    "entryPath": "/apps/english-phonics-lab/",
+    "i18n": {
+      "en-US": {
+        "name": "English Phonics Lab",
+        "description": "Build early phonics through phoneme, mouth-shape, spelling-pattern, and contrast practice.",
+        "longDescription": "Designed around four layers: sound, mouth, pattern, and contrast. Learners observe articulation, connect spelling patterns to example words, and compare nearby sounds to reduce confusion.",
+        "usage": "## How to use\n- Choose a phoneme card\n- Read the sound cue, mouth cue, and spelling patterns\n- Practice the example words aloud\n- Compare nearby sounds in the contrast section\n\n## Teaching tips\n- Let learners listen and imitate before spelling\n- Group spelling patterns under the same phoneme\n- Use contrast practice to check whether they hear the difference",
+        "tags": [
+          "English",
+          "Phonics"
+        ]
+      }
+    }
+  }
+]

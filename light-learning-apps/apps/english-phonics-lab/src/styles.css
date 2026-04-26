@@ -1,0 +1,725 @@
+:root {
+  color-scheme: light;
+  font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", "Roboto",
+    "Droid Sans Fallback", "WenQuanYi Micro Hei", sans-serif;
+  color: #17202a;
+  background: #f6f8fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+.phonics-app {
+  min-height: 100vh;
+  padding: 34px min(4vw, 48px) 48px;
+  background:
+    radial-gradient(circle at 12% 6%, rgba(0, 113, 227, 0.13), transparent 28%),
+    radial-gradient(circle at 88% 12%, rgba(49, 168, 107, 0.12), transparent 24%),
+    linear-gradient(180deg, #ffffff 0%, #f3f6fa 100%);
+}
+
+.phonics-app--spotlight {
+  display: grid;
+  align-content: start;
+  gap: 22px;
+}
+
+.phonics-hero {
+  width: min(1160px, 100%);
+  margin: 0 auto 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 168px;
+  gap: 20px;
+  align-items: center;
+}
+
+.phonics-hero__copy {
+  display: grid;
+  gap: 8px;
+}
+
+.eyebrow {
+  color: #0071e3;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 4.6rem);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+h2 {
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  letter-spacing: 0;
+}
+
+h3 {
+  font-size: 0.9rem;
+  letter-spacing: 0;
+}
+
+.phonics-hero p,
+.learning-card p,
+.spotlight-card p,
+.exercise-card p {
+  color: #5b6674;
+  line-height: 1.58;
+}
+
+.sound-orb {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(145deg, #0071e3, #31a86b);
+  box-shadow: 0 22px 44px rgba(0, 113, 227, 0.2);
+}
+
+.sound-orb span {
+  font-size: clamp(2rem, 4vw, 3.35rem);
+  font-weight: 850;
+}
+
+.sound-orb small {
+  max-width: 120px;
+  color: rgba(255, 255, 255, 0.84);
+  font-weight: 700;
+}
+
+.mode-tabs,
+.type-tabs,
+.phoneme-picker,
+.review-board {
+  width: min(1160px, 100%);
+  margin: 0 auto 14px;
+}
+
+.mode-tabs {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.mode-tab,
+.type-tab,
+.phoneme-chip,
+.review-map__chips button {
+  border: 1px solid rgba(23, 32, 42, 0.09);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.86);
+  color: #17202a;
+  cursor: pointer;
+}
+
+.mode-tab {
+  min-height: 42px;
+  padding: 8px 16px;
+  font-weight: 820;
+}
+
+.mode-tab--active,
+.type-tab--active,
+.phoneme-chip--active {
+  color: #fff;
+  border-color: transparent;
+  background: #17202a;
+}
+
+.learned-summary {
+  margin-left: auto;
+  min-height: 42px;
+  border: 1px solid rgba(49, 168, 107, 0.2);
+  border-radius: 8px;
+  padding: 7px 12px;
+  display: grid;
+  align-content: center;
+  justify-items: end;
+  background: #ecfbf3;
+  color: #16643f;
+}
+
+.learned-summary strong {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.learned-summary span {
+  font-size: 0.72rem;
+  font-weight: 760;
+}
+
+.type-tabs {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.type-tab {
+  min-height: 54px;
+  padding: 9px 10px;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+  font-weight: 780;
+}
+
+.type-tab span {
+  color: #697482;
+  font-size: 0.76rem;
+}
+
+.type-tab--active span {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.phoneme-picker {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.phoneme-chip {
+  min-height: 66px;
+  padding: 9px;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+}
+
+.phoneme-chip strong {
+  font-size: 1.16rem;
+}
+
+.phoneme-chip span {
+  max-width: 100%;
+  color: #667381;
+  font-size: 0.72rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.phoneme-chip em {
+  min-height: 18px;
+  border-radius: 999px;
+  padding: 2px 7px;
+  background: #e8f8ef;
+  color: #16643f;
+  font-size: 0.66rem;
+  font-style: normal;
+  font-weight: 820;
+}
+
+.phoneme-chip--active span {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.phoneme-chip--active em {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.phoneme-chip--learned:not(.phoneme-chip--active) {
+  border-color: rgba(49, 168, 107, 0.4);
+  background: #f4fcf7;
+}
+
+.phoneme-layout {
+  width: min(1160px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  gap: 14px;
+}
+
+.phoneme-layout--single {
+  grid-template-columns: 1fr;
+}
+
+.phoneme-tabs {
+  display: grid;
+  gap: 9px;
+  align-content: start;
+}
+
+.phoneme-tab {
+  min-height: 70px;
+  border: 1px solid rgba(23, 32, 42, 0.08);
+  border-radius: 8px;
+  padding: 11px 12px;
+  display: grid;
+  gap: 3px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.86);
+  color: #17202a;
+  cursor: pointer;
+}
+
+.phoneme-tab span {
+  font-size: 1.14rem;
+  font-weight: 850;
+}
+
+.phoneme-tab small {
+  color: #667381;
+}
+
+.phoneme-tab--active {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(135deg, #0071e3, #31a86b);
+  box-shadow: 0 14px 30px rgba(0, 113, 227, 0.16);
+}
+
+.phoneme-tab--active small {
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.learning-card,
+.spotlight-card,
+.exercise-card,
+.practice-status {
+  border: 1px solid rgba(23, 32, 42, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 42px rgba(23, 32, 42, 0.07);
+}
+
+.learning-card {
+  padding: 22px;
+  display: grid;
+  gap: 18px;
+}
+
+.learning-card header {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+}
+
+.learned-toggle {
+  margin-left: auto;
+  min-height: 40px;
+  border: 1px solid rgba(23, 32, 42, 0.12);
+  border-radius: 8px;
+  padding: 8px 13px;
+  background: #fff;
+  color: #17202a;
+  font-weight: 820;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.learned-toggle--active {
+  border-color: rgba(49, 168, 107, 0.5);
+  background: #e8f8ef;
+  color: #16643f;
+}
+
+.learning-card__symbol {
+  width: 72px;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  background: #edf6ff;
+  color: #0062c3;
+  font-size: 1.3rem;
+  font-weight: 850;
+}
+
+.learning-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.learning-grid section {
+  min-height: 146px;
+  border: 1px solid rgba(23, 32, 42, 0.08);
+  border-radius: 8px;
+  padding: 15px;
+  display: grid;
+  gap: 9px;
+  align-content: start;
+  background: #fbfcfe;
+}
+
+.mouth-steps {
+  margin: 0;
+  padding-left: 20px;
+  color: #3f4a56;
+  line-height: 1.5;
+}
+
+.pattern-groups {
+  display: grid;
+  gap: 8px;
+}
+
+.pattern-group {
+  min-height: 34px;
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.pattern-group strong {
+  min-height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: #eef6ff;
+  color: #075ca8;
+}
+
+.pattern-group span {
+  color: #5b6674;
+  line-height: 1.35;
+}
+
+.word-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.word-chip,
+.answer-option {
+  border: 1px solid rgba(0, 113, 227, 0.16);
+  background: #eef6ff;
+  color: #075ca8;
+  font-weight: 780;
+  cursor: pointer;
+}
+
+.word-chip {
+  min-height: 38px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.word-chip small {
+  color: #557da0;
+  font-size: 0.72rem;
+}
+
+.word-chip--touched {
+  border-color: rgba(49, 168, 107, 0.5);
+  background: #ecfbf3;
+  color: #146c43;
+}
+
+.contrast-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.contrast-pair div {
+  min-height: 82px;
+  border-radius: 8px;
+  background: #f1f6fb;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 5px;
+}
+
+.contrast-pair strong {
+  font-size: 1.35rem;
+}
+
+.contrast-pair span {
+  color: #5b6674;
+  font-weight: 720;
+}
+
+.practice-panel {
+  width: min(1160px, 100%);
+  margin: 16px auto 0;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.practice-panel--single {
+  grid-template-columns: 1fr;
+}
+
+.practice-status {
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.practice-status div {
+  min-height: 58px;
+  border-radius: 8px;
+  background: #f7f9fc;
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  padding: 10px 12px;
+}
+
+.practice-status span,
+.exercise-card__topline,
+.day-result {
+  color: #697482;
+  font-size: 0.86rem;
+}
+
+.practice-status strong {
+  font-size: 1.34rem;
+}
+
+.exercise-card {
+  padding: 20px;
+  display: grid;
+  gap: 15px;
+}
+
+.exercise-card__topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 760;
+}
+
+.answer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.answer-option {
+  min-height: 56px;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.answer-option:disabled {
+  cursor: default;
+}
+
+.answer-option--selected {
+  outline: 2px solid #17202a;
+}
+
+.answer-option--correct {
+  border-color: rgba(49, 168, 107, 0.55);
+  background: #e8f8ef;
+  color: #16643f;
+}
+
+.answer-option--wrong {
+  border-color: rgba(218, 78, 78, 0.55);
+  background: #fff0f0;
+  color: #9c2e2e;
+}
+
+.feedback {
+  border-radius: 8px;
+  padding: 10px 12px;
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+.feedback--correct {
+  background: #e8f8ef;
+  color: #16643f;
+}
+
+.feedback--wrong {
+  background: #fff0f0;
+  color: #9c2e2e;
+}
+
+.practice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.practice-actions button {
+  min-height: 38px;
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 14px;
+  color: #fff;
+  background: #17202a;
+  font-weight: 780;
+  cursor: pointer;
+}
+
+.practice-actions button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.practice-actions .ghost-button {
+  color: #53606e;
+  background: #edf1f6;
+}
+
+.review-board {
+  display: grid;
+}
+
+.review-map {
+  border: 1px solid rgba(23, 32, 42, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.review-map h2 {
+  font-size: 0.95rem;
+  color: #3f4a56;
+}
+
+.review-map__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.review-map__chips button {
+  min-height: 36px;
+  min-width: 50px;
+  padding: 7px 10px;
+  font-weight: 820;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.review-map__chips button span {
+  border-radius: 999px;
+  padding: 1px 5px;
+  background: #e8f8ef;
+  color: #16643f;
+  font-size: 0.62rem;
+}
+
+.spotlight-grid {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.spotlight-card {
+  min-height: 180px;
+  padding: 18px;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+@media (max-width: 960px) {
+  .type-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .phoneme-picker {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .phonics-hero,
+  .phoneme-layout,
+  .practice-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .sound-orb {
+    width: min(168px, 54vw);
+  }
+
+  .learning-grid,
+  .spotlight-grid,
+  .answer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .phonics-app {
+    padding: 22px 14px 34px;
+  }
+
+  .mode-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .learned-summary {
+    grid-column: 1 / -1;
+    margin-left: 0;
+    justify-items: center;
+  }
+
+  .type-tabs,
+  .phoneme-picker {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .learning-card {
+    padding: 16px;
+  }
+
+  .learning-card header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .learned-toggle {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .learning-card__symbol {
+    width: 60px;
+  }
+
+  .contrast-pair,
+  .pattern-group {
+    grid-template-columns: 1fr;
+  }
+}

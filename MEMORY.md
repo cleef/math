@@ -4,9 +4,10 @@
 - Repo now uses a two-project architecture similar to PlayHub:
   - `light-math-hub` (hub frontend)
   - `light-maths` (apps collection + host scripts)
-- Production domain is `math.chat1.co`.
+- Planned platform migration now targets the final `learning` structure directly: rename `light-math-hub` to `light-learning-hub`, `light-maths` to `light-learning-apps`, and local repo path to `/Users/lee/git/learning`.
+- Production domain target is `learning.chat1.co`; DNS is already set and GitHub target is `https://github.com/cleef/learning`.
 - Standard app path contract: `/apps/<id>/`.
-- Deployment script is `scripts/deploy-math-chat1.sh`.
+- Target deployment script is `scripts/deploy-learning-chat1.sh`.
 - Chinese base UI font stack is standardized to:
   - `"PingFang SC", "Microsoft YaHei", "Helvetica Neue", "Roboto", "Droid Sans Fallback", "WenQuanYi Micro Hei", sans-serif`
 - Hub and existing apps no longer depend on Google font imports for title text; title typography now uses the same local system stack to avoid runtime font swap.
@@ -48,4 +49,10 @@
 - `allocation-expression-lab` has been reframed around the repo's Birkar-inspired ethos: the UI now emphasizes observing invariants, locating where change happens (group count vs total), and experiencing equations as two expressions "meeting", rather than pressure-heavy right/wrong drilling.
 - Active pursuit app in Hub is now `cosmic-chase`; `speed-chase-lab` remains in the repo but is disabled/unlisted in Hub registry.
 - Hub list cards now launch apps directly via `/run/:id`; the detail page is accessed from a hover/focus-only card button.
-- Hub app tags are still metadata, but the home list no longer exposes tag chips in the frontend; discovery is currently search-first.
+- Hub home top navigation is intentionally minimal: Home plus first-level subject links only. Search and user placeholder UI are removed from the top bar, and language switching lives in a footer dropdown.
+- `english-phonics-lab` current product model: full British-oriented IPA inventory with 44 phoneme records, two top-level modes (`Single phoneme` and `Review`), no D1-D30/daily-plan completion flow, and no backend user progress.
+- `english-phonics-lab` single-phoneme mode lets learners choose any phoneme by category and study Sound / Mouth / Pattern / Words / Contrast; Review mode uses mixed exercises from the full generated exercise bank.
+- `english-phonics-lab` learned-mark tracking is local-browser only under `localStorage` key `light-learning.english-phonics-lab.learned.v1`; each phoneme can be marked/unmarked as learned, and marked phonemes show `Done` plus a learned count.
+- `cube-surface-lab` next design plans live in `docs/plans/2026-04-26-cube-main-axis-page-3.md` for page 3 main-axis / `1 + 4 + 1` cube-net learning and `docs/plans/2026-04-26-cuboid-unfolding-learning.md` for cuboid unfolding with three face-size pairs and edge-length checks.
+- `cube-surface-lab` now has Page 3 `Main Axis`: learners can inspect the first six `1 + 4 + 1` cube nets, select candidate axis cells, reveal the four-face belt and two caps, and view a fold-belt preview.
+- `cube-surface-lab` Page 1 valid scissor cuts now auto-unfold into a flat net and keep manual Unfold/Refold controls; Page 2 target cut buttons now trigger scissor animation directly, support Cut remaining + unfold, and auto-open the selected net after all target cuts.

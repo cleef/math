@@ -1,15 +1,15 @@
-# AGENTS.md - light-math
+# AGENTS.md - light-learning
 
 This file is the working guide for Codex in this repository.
 
 ## 1) Project Snapshot
 
-- Repo: `math`
-- Type: multi-project frontend repo for math teaching apps
+- Repo: `learning`
+- Type: multi-project frontend repo for multi-subject learning apps
 - Main modules:
-  - `light-math-hub`: math app lobby frontend (React + Vite)
-  - `light-maths`: math app collection, templates, static build host scripts, optional API gateway
-- Production domain: `math.chat1.co`
+  - `light-learning-hub`: Learning Shell frontend (React + Vite)
+  - `light-learning-apps`: learning app collection, templates, static build host scripts, optional API gateway
+- Production domain: `learning.chat1.co`
 
 ## 2) Tech Stack and Runtime
 
@@ -24,44 +24,44 @@ Default local ports:
 
 ## 3) Architecture (Request Flow)
 
-1. User opens Hub (`light-math-hub`) at `/`.
-2. Hub lists apps from `light-math-hub/src/data/apps.json`.
+1. User opens Learning Shell (`light-learning-hub`) at `/`.
+2. Shell lists subjects (`/math`, `/english`) and subject pages list apps from `light-learning-hub/src/data/apps.json`.
 3. Hub proxies:
-   - `/apps/*` -> apps static host (`LIGHT_APPS_HOST_URL`, default `http://localhost:5174`)
-   - `/api/apps/*` -> API gateway (`LIGHT_APPS_API_GATEWAY_URL`, default `http://localhost:7060`)
+   - `/apps/*` -> apps static host (`LIGHT_LEARNING_APPS_HOST_URL`, default `http://localhost:5174`)
+   - `/api/apps/*` -> API gateway (`LIGHT_LEARNING_APPS_API_GATEWAY_URL`, default `http://localhost:7060`)
 4. Launch flow:
    - Hub route `/run/:id` redirects to `entryPath` (usually `/apps/<id>/`)
-5. Each app is built into `light-maths/dist/apps/<id>/`.
+5. Each app is built into `light-learning-apps/dist/apps/<id>/`.
 
 ## 4) High-Value Paths
 
 - Root overview: `README.md`
 - Project ethos: `SOUL.md`
-- Deploy script: `scripts/deploy-math-chat1.sh`
+- Deploy script: `scripts/deploy-learning-chat1.sh`
 - Hub:
-  - `light-math-hub/src/App.tsx`
-  - `light-math-hub/src/data/apps.json`
-  - `light-math-hub/src/data/currentUser.ts`
-  - `light-math-hub/vite.config.ts`
+  - `light-learning-hub/src/App.tsx`
+  - `light-learning-hub/src/data/apps.json`
+  - `light-learning-hub/src/data/currentUser.ts`
+  - `light-learning-hub/vite.config.ts`
 - Apps host:
-  - `light-maths/scripts/build-all.mjs`
-  - `light-maths/server/gateway.mjs`
-  - `light-maths/docs/light-app-standard.md`
-  - `light-maths/templates/light-app/*`
+  - `light-learning-apps/scripts/build-all.mjs`
+  - `light-learning-apps/server/gateway.mjs`
+  - `light-learning-apps/docs/light-app-standard.md`
+  - `light-learning-apps/templates/light-app/*`
 - Sample app:
-  - `light-maths/apps/fraction-lab/*`
+  - `light-learning-apps/apps/fraction-lab/*`
 
 ## 5) Core Contracts to Preserve
 
 ### App Packaging Contract
-- Every app lives in `light-maths/apps/<id>/`.
+- Every app lives in `light-learning-apps/apps/<id>/`.
 - Every app has `light-app.json` with at least: `id`, `name`, `version`, `description`, `entry`.
 - Vite `base` must stay `/apps/<id>/`.
-- Build output must stay `light-maths/dist/apps/<id>/`.
+- Build output must stay `light-learning-apps/dist/apps/<id>/`.
 - Multi-entry build should include `index.html` and `game-spotlight.html`.
 
 ### Hub Registry Contract
-- Hub only shows what is declared in `light-math-hub/src/data/apps.json`.
+- Hub only shows what is declared in `light-learning-hub/src/data/apps.json`.
 - App is visible only when all are true:
   - `enabled === true`
   - `listed !== false`
@@ -69,7 +69,7 @@ Default local ports:
 - `entryPath` should point to `/apps/<id>/`.
 
 ### Permission Consistency
-- If app permissions change in `apps.json`, update `light-math-hub/src/data/currentUser.ts` for local dev access.
+- If app permissions change in `apps.json`, update `light-learning-hub/src/data/currentUser.ts` for local dev access.
 
 ### Generated/Runtime Files
 - Do not hand-edit generated artifacts:
@@ -103,28 +103,29 @@ Never store secrets in memory files.
 ## 8) Commands You Will Use
 
 Hub:
-- `cd light-math-hub && npm install`
-- `cd light-math-hub && npm run dev`
-- `cd light-math-hub && npm run build`
+- `cd light-learning-hub && npm install`
+- `cd light-learning-hub && npm run dev`
+- `cd light-learning-hub && npm run build`
 
 Apps:
-- `cd light-maths && npm run list:apps`
-- `cd light-maths && npm run build:all`
-- `cd light-maths && ./start-frontend.sh`
-- `cd light-maths && ./start-api.sh`
-- `cd light-maths && ./start.sh`
-- `cd light-maths && ./stop.sh`
+- `cd light-learning-apps && npm run list:apps`
+- `cd light-learning-apps && npm run build:all`
+- `cd light-learning-apps && ./start-frontend.sh`
+- `cd light-learning-apps && ./start-api.sh`
+- `cd light-learning-apps && ./start.sh`
+- `cd light-learning-apps && ./stop.sh`
 
 Deployment:
-- `cd /Users/lee/git/math && ./scripts/deploy-math-chat1.sh`
+- `cd /Users/lee/git/learning && ./scripts/deploy-learning-chat1.sh`
 
 ## 9) Verification Checklist Before Handoff
 
 - Build checks:
-  - `cd light-math-hub && npm run build`
-  - `cd light-maths && npm run build:all`
+  - `cd light-learning-hub && npm run build`
+  - `cd light-learning-apps && npm run build:all`
 - Manual checks:
-  - Hub list page (`/`)
+  - Learning home (`/`)
+  - Subject pages (`/math`, `/english`)
   - App detail page (`/app/<id>`)
   - Launch redirect (`/run/<id>`)
   - Spotlight page (`/apps/<id>/game-spotlight.html`)

@@ -1,0 +1,9 @@
+{
+  "id": "fraction-lab",
+  "name": "分数训练工坊",
+  "version": "1.0.0",
+  "description": "分数四则训练与即时讲解工具",
+  "icon": "🧮",
+  "entry": "index.html",
+  "owner": "Light Learning Team"
+}

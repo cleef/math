@@ -1,0 +1,8 @@
+{
+  "id": "english-phonics-lab",
+  "name": "English Phonics Lab",
+  "version": "0.1.0",
+  "description": "Sound, mouth shape, spelling pattern, and contrast practice for early English phonics.",
+  "entry": "index.html",
+  "owner": "Light Learning Team"
+}

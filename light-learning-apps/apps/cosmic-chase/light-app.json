@@ -1,0 +1,9 @@
+{
+  "id": "cosmic-chase",
+  "name": "宇宙追及实验室",
+  "version": "1.0.0",
+  "description": "用星空飞船追赶理解追及问题与线性函数",
+  "icon": "🛸",
+  "entry": "index.html",
+  "owner": "Light Learning Team"
+}
