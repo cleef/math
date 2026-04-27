@@ -1,6 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM, { type Root } from "react-dom/client";
 import "./styles.css";
+
+declare global {
+  interface Window {
+    cubeSurfaceLabRoot?: Root;
+  }
+}
 
 type FaceId = "front" | "back" | "up" | "down" | "left" | "right";
 
@@ -1074,6 +1080,81 @@ function pointListHas(points: Point[], cell: Point): boolean {
 function getFaceAtCell(demo: NetDemo, cell: Point): FaceId | null {
   const cellKey = keyOf(cell);
   return FACE_IDS.find((faceId) => keyOf(demo.facePositions[faceId]) === cellKey) ?? null;
+}
+
+function getCuboidFace(faceId: CuboidFaceId): CuboidFace {
+  const face = CUBOID_FACES.find((item) => item.id === faceId);
+  if (!face) {
+    throw new Error(`Unknown cuboid face: ${faceId}`);
+  }
+  return face;
+}
+
+function getCuboidRectSize(cell: CuboidNetCell): { w: number; h: number } {
+  const face = getCuboidFace(cell.faceId);
+  return cell.rotate
+    ? { w: face.size.h, h: face.size.w }
+    : { w: face.size.w, h: face.size.h };
+}
+
+function getCuboidPlacedRects(net: CuboidNet): CuboidPlacedRect[] {
+  return net.cells.map((cell) => {
+    const face = getCuboidFace(cell.faceId);
+    const size = getCuboidRectSize(cell);
+    return {
+      cell,
+      face,
+      x: cell.x,
+      y: cell.y,
+      w: size.w,
+      h: size.h
+    };
+  });
+}
+
+function getCuboidAdjacencies(net: CuboidNet): CuboidAdjacency[] {
+  const rects = getCuboidPlacedRects(net);
+  const results: CuboidAdjacency[] = [];
+  const epsilon = 0.001;
+
+  for (let i = 0; i < rects.length; i += 1) {
+    for (let j = i + 1; j < rects.length; j += 1) {
+      const a = rects[i];
+      const b = rects[j];
+      const verticalTouch =
+        Math.abs(a.x + a.w - b.x) < epsilon || Math.abs(b.x + b.w - a.x) < epsilon;
+      const horizontalOverlap = Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
+      const horizontalTouch =
+        Math.abs(a.y + a.h - b.y) < epsilon || Math.abs(b.y + b.h - a.y) < epsilon;
+      const verticalOverlap = Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x));
+
+      if (verticalTouch && horizontalOverlap > epsilon) {
+        results.push({
+          a,
+          b,
+          sharedLength: horizontalOverlap,
+          lengthMatches: Math.abs(horizontalOverlap - Math.min(a.h, b.h)) < epsilon
+        });
+      } else if (horizontalTouch && verticalOverlap > epsilon) {
+        results.push({
+          a,
+          b,
+          sharedLength: verticalOverlap,
+          lengthMatches: Math.abs(verticalOverlap - Math.min(a.w, b.w)) < epsilon
+        });
+      }
+    }
+  }
+
+  return results;
+}
+
+function getCuboidNetBounds(rects: CuboidPlacedRect[]) {
+  const minX = Math.min(...rects.map((rect) => rect.x));
+  const minY = Math.min(...rects.map((rect) => rect.y));
+  const maxX = Math.max(...rects.map((rect) => rect.x + rect.w));
+  const maxY = Math.max(...rects.map((rect) => rect.y + rect.h));
+  return { minX, minY, maxX, maxY };
 }
 
 function FlatNetStage({
@@ -2356,12 +2437,193 @@ function CubeMainAxisPage() {
   );
 }
 
+function CuboidNetBoard({ net }: { net: CuboidNet }) {
+  const rects = useMemo(() => getCuboidPlacedRects(net), [net]);
+  const bounds = useMemo(() => getCuboidNetBounds(rects), [rects]);
+  const unit = 34;
+  const width = (bounds.maxX - bounds.minX) * unit + 36;
+  const height = (bounds.maxY - bounds.minY) * unit + 36;
+
+  return (
+    <div
+      className="cuboid-net-board"
+      style={{ width: `${width}px`, height: `${height}px` }}
+      aria-label="Cuboid net with proportional rectangular faces"
+    >
+      {rects.map((rect) => (
+        <div
+          key={`${net.id}-${rect.face.id}`}
+          className={`cuboid-net-face cuboid-net-face--${rect.face.kind}`}
+          style={{
+            left: `${(rect.x - bounds.minX) * unit + 18}px`,
+            top: `${(rect.y - bounds.minY) * unit + 18}px`,
+            width: `${rect.w * unit}px`,
+            height: `${rect.h * unit}px`
+          }}
+        >
+          <strong>{rect.face.label}</strong>
+          <span>{rect.face.size.w} x {rect.face.size.h}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function CuboidUnfoldingPage() {
+  const [mode, setMode] = useState<CuboidMode>("pairs");
+  const [selectedNetId, setSelectedNetId] = useState(CUBOID_NETS[0].id);
+  const [activeFaceId, setActiveFaceId] = useState<CuboidFaceId>("front");
+  const selectedNet = useMemo(
+    () => CUBOID_NETS.find((net) => net.id === selectedNetId) ?? CUBOID_NETS[0],
+    [selectedNetId]
+  );
+  const activeFace = getCuboidFace(activeFaceId);
+  const pairedFace = getCuboidFace(activeFace.pairId);
+  const adjacencies = useMemo(() => getCuboidAdjacencies(selectedNet), [selectedNet]);
+  const allEdgesMatch = adjacencies.every((item) => item.lengthMatches);
+
+  return (
+    <section className="cuboid-workspace">
+      <article className="panel panel--cuboid-left">
+        <div className="panel__head">
+          <h2>Cuboid Faces</h2>
+          <div className="status-pill">4 x 2 x 3</div>
+        </div>
+
+        <div className="cuboid-mode-row">
+          <button
+            type="button"
+            className={`cuboid-mode ${mode === "pairs" ? "cuboid-mode--active" : ""}`}
+            onClick={() => setMode("pairs")}
+          >
+            Face Pairs
+          </button>
+          <button
+            type="button"
+            className={`cuboid-mode ${mode === "unfold" ? "cuboid-mode--active" : ""}`}
+            onClick={() => setMode("unfold")}
+          >
+            Unfold Nets
+          </button>
+          <button
+            type="button"
+            className={`cuboid-mode ${mode === "build" ? "cuboid-mode--active" : ""}`}
+            onClick={() => setMode("build")}
+          >
+            Build Check
+          </button>
+        </div>
+
+        <div className="cuboid-pair-grid">
+          {CUBOID_FACES.map((face) => (
+            <button
+              key={face.id}
+              type="button"
+              className={[
+                "cuboid-face-card",
+                `cuboid-face-card--${face.kind}`,
+                activeFaceId === face.id ? "cuboid-face-card--active" : ""
+              ].join(" ")}
+              onClick={() => setActiveFaceId(face.id)}
+            >
+              <strong>{face.label}</strong>
+              <span>{face.size.w} x {face.size.h}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="cuboid-pair-focus">
+          <div className={`cuboid-rect cuboid-rect--${activeFace.kind}`}>
+            <strong>{activeFace.label}</strong>
+            <span>{activeFace.size.w} x {activeFace.size.h}</span>
+          </div>
+          <div className={`cuboid-rect cuboid-rect--${pairedFace.kind}`}>
+            <strong>{pairedFace.label}</strong>
+            <span>{pairedFace.size.w} x {pairedFace.size.h}</span>
+          </div>
+        </div>
+      </article>
+
+      <article className="panel panel--cuboid-main">
+        <div className="panel__head">
+          <h2>{mode === "pairs" ? "Three Equal Pairs" : selectedNet.name}</h2>
+          <div className={`status-pill ${allEdgesMatch ? "status-pill--ok" : "status-pill--warn"}`}>
+            {mode === "build" ? (allEdgesMatch ? "Edges Match" : "Check Edges") : "Cuboid"}
+          </div>
+        </div>
+
+        {mode === "pairs" ? (
+          <div className="cuboid-pair-stage">
+            <div className="cuboid-pair-band cuboid-pair-band--length-height">
+              <span>Front</span>
+              <span>Back</span>
+            </div>
+            <div className="cuboid-pair-band cuboid-pair-band--length-width">
+              <span>Top</span>
+              <span>Bottom</span>
+            </div>
+            <div className="cuboid-pair-band cuboid-pair-band--width-height">
+              <span>Left</span>
+              <span>Right</span>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="cuboid-net-tabs">
+              {CUBOID_NETS.map((net) => (
+                <button
+                  key={net.id}
+                  type="button"
+                  className={`cuboid-net-tab ${selectedNetId === net.id ? "cuboid-net-tab--active" : ""}`}
+                  onClick={() => setSelectedNetId(net.id)}
+                >
+                  {net.name}
+                </button>
+              ))}
+            </div>
+
+            <div className="cuboid-main-grid">
+              <CuboidNetBoard net={selectedNet} />
+              <div className="cuboid-fold-preview" aria-label="Folded cuboid preview">
+                <div className="cuboid-solid">
+                  <div className="cuboid-solid__face cuboid-solid__face--front">4 x 3</div>
+                  <div className="cuboid-solid__face cuboid-solid__face--top">4 x 2</div>
+                  <div className="cuboid-solid__face cuboid-solid__face--right">2 x 3</div>
+                </div>
+              </div>
+            </div>
+
+            <p className="judge">{selectedNet.teachingNote}</p>
+
+            {mode === "build" ? (
+              <div className="cuboid-check-list">
+                {adjacencies.map((item) => (
+                  <div
+                    key={`${selectedNet.id}-${item.a.face.id}-${item.b.face.id}`}
+                    className={`cuboid-check ${item.lengthMatches ? "cuboid-check--ok" : "cuboid-check--bad"}`}
+                  >
+                    <strong>
+                      {item.a.face.label} - {item.b.face.label}
+                    </strong>
+                    <span>{item.sharedLength} unit shared edge</span>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </>
+        )}
+      </article>
+    </section>
+  );
+}
+
 function CubeSurfaceLabApp() {
-  const [page, setPage] = useState<"cut" | "nets" | "axis">("cut");
+  const [page, setPage] = useState<"cut" | "nets" | "axis" | "cuboid">("cut");
   const pageSubtitle = {
     cut: "Page 1: interactive edge-cut lab. Select edges, simulate scissors, then validate unfolding.",
     nets: "Page 2: all 11 cube nets. Each includes cut edges, step-by-step scissor unfolding, and final shape.",
-    axis: "Page 3: find the four-face main axis, then watch the two caps close the cube."
+    axis: "Page 3: find the four-face main axis, then watch the two caps close the cube.",
+    cuboid: "Page 4: unfold a cuboid by matching three pairs of rectangles and their shared edge lengths."
   }[page];
 
   return (
@@ -2392,6 +2654,13 @@ function CubeSurfaceLabApp() {
           >
             Page 3: Main Axis
           </button>
+          <button
+            type="button"
+            className={`tab-btn ${page === "cuboid" ? "tab-btn--active" : ""}`}
+            onClick={() => setPage("cuboid")}
+          >
+            Page 4: Cuboid Nets
+          </button>
         </div>
       </header>
 
@@ -2399,14 +2668,20 @@ function CubeSurfaceLabApp() {
         <CubeCutExperimentPage />
       ) : page === "nets" ? (
         <CubeNetsDemoPage />
-      ) : (
+      ) : page === "axis" ? (
         <CubeMainAxisPage />
+      ) : (
+        <CuboidUnfoldingPage />
       )}
     </main>
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const rootElement = document.getElementById("root")!;
+const appRoot = window.cubeSurfaceLabRoot ?? ReactDOM.createRoot(rootElement);
+window.cubeSurfaceLabRoot = appRoot;
+
+appRoot.render(
   <React.StrictMode>
     <CubeSurfaceLabApp />
   </React.StrictMode>

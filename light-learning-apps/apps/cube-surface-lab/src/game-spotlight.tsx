@@ -6,7 +6,8 @@ const highlights = [
   "Turns cube surface area from formula memorization into visual reasoning through cuts and unfolding.",
   "Supports trial-and-error: learners can start with 3 cuts and iterate toward a valid full net.",
   "When the plan is valid, the app plays a verification unfold animation to strengthen spatial understanding.",
-  "Adds a main-axis lens for the first six 1 + 4 + 1 cube nets, making the four-face belt and two caps visible."
+  "Adds a main-axis lens for the first six 1 + 4 + 1 cube nets, making the four-face belt and two caps visible.",
+  "Extends cube nets to cuboid nets by showing three equal face pairs and matching edge lengths."
 ];
 
 const sections = [
@@ -25,6 +26,10 @@ const sections = [
   {
     title: "Module 4: Main Axis",
     caption: "Find the four-face belt inside a cube net and watch the remaining faces become caps."
+  },
+  {
+    title: "Module 5: Cuboid Nets",
+    caption: "Compare three face-size pairs, unfold sample cuboid nets, and check shared edge lengths."
   }
 ];
 

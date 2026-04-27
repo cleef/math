@@ -56,3 +56,4 @@
 - `cube-surface-lab` next design plans live in `docs/plans/2026-04-26-cube-main-axis-page-3.md` for page 3 main-axis / `1 + 4 + 1` cube-net learning and `docs/plans/2026-04-26-cuboid-unfolding-learning.md` for cuboid unfolding with three face-size pairs and edge-length checks.
 - `cube-surface-lab` now has Page 3 `Main Axis`: learners can inspect the first six `1 + 4 + 1` cube nets, select candidate axis cells, reveal the four-face belt and two caps, and view a fold-belt preview.
 - `cube-surface-lab` Page 1 valid scissor cuts now auto-unfold into a flat net and keep manual Unfold/Refold controls; Page 2 target cut buttons now trigger scissor animation directly, support Cut remaining + unfold, and auto-open the selected net after all target cuts.
+- `cube-surface-lab` now has Page 4 `Cuboid Nets`: learners compare three face-size pairs (`4 x 3`, `4 x 2`, `2 x 3`), inspect curated proportional cuboid nets, and run Build Check shared-edge validation.
